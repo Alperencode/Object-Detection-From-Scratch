@@ -4,6 +4,7 @@ using Emgu.CV.Structure;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using static FaceDetection.Compare;
 
 namespace FaceDetection
 {
@@ -45,30 +46,31 @@ namespace FaceDetection
                     // Perform face detection
                     var faces = faceCascade.DetectMultiScale(
                         grayFrame,
-                        scaleFactor: 1.1,
+                        scaleFactor: 1.3,
                         minNeighbors: 5,
                         minSize: new Size(30, 30),
                         maxSize: Size.Empty);
 
 
-                    // List<Rectangle> faceRects = new List<Rectangle>();
+                    List<Bitmap> faceBitmaps = new List<Bitmap>();
 
                     // Draw rectangles around the detected faces
                     foreach (var face in faces)
                     {
-                        debug.Text = face.ToString();
-                        debug0.Text = face.X.ToString();
-                        debug1.Text = face.Y.ToString();
-                        debug2.Text = face.Width.ToString();
-                        debug3.Text = face.Height.ToString();
-
                         frame.Draw(face, new Bgr(Color.Green), thickness: 2);
                         Rectangle faceRect = new Rectangle(face.X, face.Y, face.Width, face.Height);
 
                         var faceImage = frame.Copy(faceRect).ToBitmap();
-                        picDebug.Image = faceImage;
+                        // picDebug.Image = faceImage;
 
-                       // faceRects.Add(faceRect);
+                        faceBitmaps.Add(faceImage);
+                    }
+
+                    if(faces.Length == 2)
+                    {
+                        Compare compare = new Compare();
+                        double result = compare.CompareImages(faceBitmaps[0], faceBitmaps[1]);
+                        score.Text = "%" + result.ToString("F2");
                     }
 
                 }
@@ -77,6 +79,8 @@ namespace FaceDetection
                 DetectedPic.Image = frame.ToBitmap();
             }
         }
+
+
         private void Form1_Load_1(object sender, EventArgs e)
         {
             // Initialize the webcam capture
