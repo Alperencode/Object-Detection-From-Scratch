@@ -6,8 +6,10 @@
         {
             // var debugLabel = form.Controls.Find("debugLabel", true).FirstOrDefault();
 
-            int[] coin1X = FindCoinXValues(image, 0, 0, FindX:true);
-            int[] coin2X = FindCoinXValues(image, coin1X[1]+1, 0, FindX: true);
+            int[] coin1X = FindCoinAxis(image, 0, 0, FindWidth:true);
+            int[] coin2X = FindCoinAxis(image, coin1X[1]+1, 0, FindWidth: true);
+
+            int[] coin1Y = FindCoinAxis(image, 0, 0, FindWidth: false);
         }
 
         public double PixelColorSimilarity(Color pixel1, Color pixel2)
@@ -31,18 +33,19 @@
             return -1;
         }
 
-        public int[] FindCoinXValues(Bitmap image, int argX, int argY, bool FindX)
+        public int[] FindCoinAxis(Bitmap image, int argX, int argY, bool FindWidth)
         {
             Color lastPixel = image.GetPixel(argX, argY);
 
-            int startX = -1;
-            int endX = -1;
+            int start = -1;
+            int end = -1;
 
-            for (int x = argX; x < image.Width; x++)
+            for (int i = (FindWidth ? argX : argY); i < (FindWidth ? image.Width : image.Height); i++)
             {
-                for (int y = argY; y < image.Height; y++)
+                for (int j = (FindWidth ? argY : argX); j < (FindWidth ? image.Height : image.Width); j++)
                 {
-                    Color currentPixel = image.GetPixel(x, y);
+
+                    Color currentPixel = image.GetPixel((FindWidth ? i : j), (FindWidth ? j : i));
 
                     double graySimilarity = PixelColorSimilarity(currentPixel, Color.DarkGray);
 
@@ -50,27 +53,36 @@
                     if (graySimilarity > 125)
                     {
                         /* Painting coin to red (DEBUG)
-                        image.SetPixel(x, y, Color.Red);
+                        image.SetPixel(i, j, Color.Red);
                         */
 
-                        // First coin startX
-                        startX = x;
-                        endX = FindEndOfCoin(image, x, y);
+                        if (FindWidth)
+                        {
+                            // First coin start
+                            start = i;
+                            end = FindEndOfCoin(image, i, j);
 
-                        // Drawing red lines on coin
-                        Pen blackPen = new Pen(Color.Red, 5);
-                        using (var graphics = Graphics.FromImage(image)) {
-                            graphics.DrawLine(blackPen, startX, y, endX, y);
+                            // Drawing red lines on coin
+                            Pen blackPen = new Pen(Color.Red, 5);
+                            using (var graphics = Graphics.FromImage(image))
+                            {
+                                graphics.DrawLine(blackPen, start, j, end, j);
+                            }
+
+                            return new int[] { start, end };
                         }
+                        else
+                        {
+                            // Implement here
+                        };
 
-                        return new int[] { startX, endX };
                     }
 
                     lastPixel = currentPixel;
                 }
             }
 
-            return new int[] { startX, endX };
+            return new int[] { start, end };
         }
     }
 }
