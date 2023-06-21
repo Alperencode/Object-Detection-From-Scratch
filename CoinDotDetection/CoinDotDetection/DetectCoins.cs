@@ -1,42 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Drawing.Design;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace CoinDotDetection
 {
     internal class DetectCoins
     {
-        public Bitmap DetecCoinsInImage(Bitmap image)
+        public Bitmap DetecCoinsInImage(Bitmap image, Form form)
         {
-            Color lastPixel = image.GetPixel(0, 0);
-
             Bitmap debugImage = (Bitmap)image.Clone();
+            var debugLabel = form.Controls.Find("debugLabel", true).FirstOrDefault();
 
-            for (int x = 0; x < image.Width; x++)
-            {
-                for (int y = 0; y < image.Height; y++)
-                {
-                    Color currentPixel = image.GetPixel(x, y);
-                    double similarity = PixelColorSimilarity(lastPixel, currentPixel);
-                    double graySimilarity = PixelColorSimilarity(currentPixel, Color.DarkGray);
-
-                    if (similarity > 20 && graySimilarity > 125)
-                    {
-                        debugImage.SetPixel(x, y, Color.Red);
-                    }
-
-                    lastPixel = currentPixel;
-                }
-            }
+            int[] coin1X = FindCoinXValues(image, 0, 0);
+            int[] coin2X = FindCoinXValues(image, coin1X[1]+1, 0);
 
             return debugImage;
-
         }
 
         public double PixelColorSimilarity(Color pixel1, Color pixel2)
@@ -45,6 +33,69 @@ namespace CoinDotDetection
             double distance = Math.Sqrt(Math.Pow(pixel1.R - pixel2.R, 2) + Math.Pow(pixel1.G - pixel2.G, 2) + Math.Pow(pixel1.B - pixel2.B, 2));
 
             return distance;
+        }
+
+        public int FindEndOfCoin(Bitmap image, int startX, int startY)
+        {
+            for (int i = startX; i < image.Width; i++)
+            {
+                // If pixel is similar with DarkGray, means end of the coin
+                if (PixelColorSimilarity(image.GetPixel(i, startY), Color.DarkGray) < 25)
+                {
+                    /* Red line for end of coin (DEBUG)
+                    for (int j = 0; j < image.Height; j++)
+                    {
+                        image.SetPixel(i, j, Color.Red);
+                    }
+                    */
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public int[] FindCoinXValues(Bitmap image, int argX, int argY)
+        {
+            Color lastPixel = image.GetPixel(argX, argY);
+
+            int startX = -1;
+            int endX = -1;
+
+            for (int x = argX; x < image.Width; x++)
+            {
+                for (int y = argY; y < image.Height; y++)
+                {
+                    Color currentPixel = image.GetPixel(x, y);
+
+                    double similarity = PixelColorSimilarity(lastPixel, currentPixel);
+                    double graySimilarity = PixelColorSimilarity(currentPixel, Color.DarkGray);
+
+                    // If not similar with gray, means found the coin
+                    if (graySimilarity > 125)
+                    {
+                        /* Painting coin to red (DEBUG)
+                        image.SetPixel(x, y, Color.Red);
+                        */
+
+                        // First coin startX
+                        startX = x;
+                        endX = FindEndOfCoin(image, x, y);
+
+                        /* Red Line for end of coin (DEBUG)
+                        for (int i = 0; i < image.Height; i++)
+                        {
+                            image.SetPixel(x, i, Color.Red);
+                        }
+                        */
+
+                        return new int[] { startX, endX };
+                    }
+
+                    lastPixel = currentPixel;
+                }
+            }
+
+            return new int[] { startX, endX };
         }
     }
 }

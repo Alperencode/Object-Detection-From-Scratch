@@ -11,17 +11,15 @@ namespace CoinDotDetection
             InitializeComponent();
         }
 
-
         public void LoadImage()
         {
             Bitmap image = new Bitmap("Coins.jpeg");
 
             DetectCoins detectCoins = new DetectCoins();
 
-            Bitmap debug = detectCoins.DetecCoinsInImage(image);
+            Bitmap debug = detectCoins.DetecCoinsInImage(image, this);
 
-            debugPictureBox.Image = debug;
-            debugLabel.Text = detectCoins.PixelColorSimilarity(image.GetPixel(0,0), Color.Gray).ToString();
+            // debugLabel.Text = image.GetPixel(0,0).ToArgb().ToString();
             pictureBox.Image = image;
 
         }
