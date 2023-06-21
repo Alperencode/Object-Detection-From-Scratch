@@ -1,30 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
-using System.Drawing.Design;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.ExceptionServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
-
-namespace CoinDotDetection
+﻿namespace CoinDotDetection
 {
     internal class DetectCoins
     {
-        public Bitmap DetecCoinsInImage(Bitmap image, Form form)
+        public void DetecCoinsInImage(Bitmap image, Form form)
         {
-            Bitmap debugImage = (Bitmap)image.Clone();
-            var debugLabel = form.Controls.Find("debugLabel", true).FirstOrDefault();
+            // var debugLabel = form.Controls.Find("debugLabel", true).FirstOrDefault();
 
             int[] coin1X = FindCoinXValues(image, 0, 0);
             int[] coin2X = FindCoinXValues(image, coin1X[1]+1, 0);
-
-            return debugImage;
         }
 
         public double PixelColorSimilarity(Color pixel1, Color pixel2)
