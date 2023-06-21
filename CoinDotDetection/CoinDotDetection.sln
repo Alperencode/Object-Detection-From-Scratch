@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinDotDetection", "CoinDotDetection\CoinDotDetection.csproj", "{C181F5FD-D52D-441C-AEF1-8F20EB8D6744}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C181F5FD-D52D-441C-AEF1-8F20EB8D6744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C181F5FD-D52D-441C-AEF1-8F20EB8D6744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C181F5FD-D52D-441C-AEF1-8F20EB8D6744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C181F5FD-D52D-441C-AEF1-8F20EB8D6744}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C0EE25A1-C11C-4ABD-A4F5-64A6F295D4B8}
+	EndGlobalSection
+EndGlobal
