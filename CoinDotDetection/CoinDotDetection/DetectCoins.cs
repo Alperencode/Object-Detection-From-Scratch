@@ -6,8 +6,8 @@
         {
             // var debugLabel = form.Controls.Find("debugLabel", true).FirstOrDefault();
 
-            int[] coin1X = FindCoinXValues(image, 0, 0);
-            int[] coin2X = FindCoinXValues(image, coin1X[1]+1, 0);
+            int[] coin1X = FindCoinXValues(image, 0, 0, FindX:true);
+            int[] coin2X = FindCoinXValues(image, coin1X[1]+1, 0, FindX: true);
         }
 
         public double PixelColorSimilarity(Color pixel1, Color pixel2)
@@ -25,19 +25,13 @@
                 // If pixel is similar with DarkGray, means end of the coin
                 if (PixelColorSimilarity(image.GetPixel(i, startY), Color.DarkGray) < 25)
                 {
-                    /* Red line for end of coin (DEBUG)
-                    for (int j = 0; j < image.Height; j++)
-                    {
-                        image.SetPixel(i, j, Color.Red);
-                    }
-                    */
                     return i;
                 }
             }
             return -1;
         }
 
-        public int[] FindCoinXValues(Bitmap image, int argX, int argY)
+        public int[] FindCoinXValues(Bitmap image, int argX, int argY, bool FindX)
         {
             Color lastPixel = image.GetPixel(argX, argY);
 
@@ -50,7 +44,6 @@
                 {
                     Color currentPixel = image.GetPixel(x, y);
 
-                    double similarity = PixelColorSimilarity(lastPixel, currentPixel);
                     double graySimilarity = PixelColorSimilarity(currentPixel, Color.DarkGray);
 
                     // If not similar with gray, means found the coin
@@ -64,12 +57,11 @@
                         startX = x;
                         endX = FindEndOfCoin(image, x, y);
 
-                        /* Red Line for end of coin (DEBUG)
-                        for (int i = 0; i < image.Height; i++)
-                        {
-                            image.SetPixel(x, i, Color.Red);
+                        // Drawing red lines on coin
+                        Pen blackPen = new Pen(Color.Red, 5);
+                        using (var graphics = Graphics.FromImage(image)) {
+                            graphics.DrawLine(blackPen, startX, y, endX, y);
                         }
-                        */
 
                         return new int[] { startX, endX };
                     }
