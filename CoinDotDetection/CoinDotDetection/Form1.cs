@@ -17,7 +17,16 @@ namespace CoinDotDetection
 
             DetectCoins detectCoins = new DetectCoins();
 
-            detectCoins.DetecCoinsInImage(image, this);
+            List<Rectangle> coins = detectCoins.DetecCoinsInImage(image);
+
+            Pen pen = new Pen(Color.Red, 3);
+            foreach (Rectangle coin in coins)
+            {
+                using (var graphics = Graphics.FromImage(image))
+                {
+                    graphics.DrawRectangle(pen, coin);
+                }
+            }
 
             pictureBox.Image = image;
 
