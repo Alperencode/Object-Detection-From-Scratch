@@ -88,7 +88,7 @@
             // 
             this.score.AutoSize = true;
             this.score.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.score.Location = new System.Drawing.Point(612, 632);
+            this.score.Location = new System.Drawing.Point(588, 622);
             this.score.Name = "score";
             this.score.Size = new System.Drawing.Size(39, 54);
             this.score.TabIndex = 13;
