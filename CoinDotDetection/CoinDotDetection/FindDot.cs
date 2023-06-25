@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static CoinDotDetection.DetectCoins;
-
-namespace CoinDotDetection
+﻿namespace CoinDotDetection
 {
     internal class FindDot
     {
@@ -14,7 +7,7 @@ namespace CoinDotDetection
             int width = Math.Min(coin1.Width, coin2.Width);
             int height = Math.Min(coin1.Height, coin2.Height);
 
-            DetectCoins detection = new DetectCoins();
+            DetectCoins detection = new();
 
             int coin1Dots = 0;
             int coin2Dots = 0;
@@ -28,7 +21,7 @@ namespace CoinDotDetection
                     if (detection.PixelColorSimilarity(coin1Current, Color.Black) < 3)
                     {
                         coin1Dots++;
-                    }else if(detection.PixelColorSimilarity(coin1Current, Color.Black) < 3)
+                    }else if(detection.PixelColorSimilarity(coin2Current, Color.Black) < 3)
                     {
                         coin2Dots++;
                     }

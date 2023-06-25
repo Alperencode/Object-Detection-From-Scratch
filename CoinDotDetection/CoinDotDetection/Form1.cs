@@ -1,7 +1,3 @@
-using System.Drawing;
-using static CoinDotDetection.DetectCoins;
-using static System.Net.Mime.MediaTypeNames;
-
 namespace CoinDotDetection
 {
     public partial class Form1 : Form
@@ -25,7 +21,7 @@ namespace CoinDotDetection
             {
                 using (var graphics = Graphics.FromImage(image))
                 {
-                    // graphics.DrawRectangle(redPen, coin);
+                    graphics.DrawRectangle(redPen, coin);
                 }
             }
 

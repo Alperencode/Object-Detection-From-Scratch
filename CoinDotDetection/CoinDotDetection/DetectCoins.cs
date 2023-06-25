@@ -4,15 +4,22 @@
     {
         public List<Rectangle> DetecCoinsInImage(Bitmap image)
         {
-            int[] coin1X = FindCoinAxis(image, 0, 0, FindWidth: true);
-            int[] coin2X = FindCoinAxis(image, coin1X[1]+1, 0, FindWidth: true);
+            Coin coin1 = new();
+            Coin coin2 = new();
 
-            int[] coin1Y = FindCoinAxis(image, 0, 0, FindWidth: false);
-            int[] coin2Y = FindCoinAxis(image, 0, coin1Y[0] + 1, FindWidth: false);
+
+            FindCoinAxis(image, coin1, 0, 0, FindWidth: true);
+            FindCoinAxis(image, coin2, (coin1.xEnd + 1), 0, FindWidth: true);
+
+            /* Need to match widths and heights with the right coin
+             * Currently it's not implemented and causes logic bugs
+             */
+            FindCoinAxis(image, coin1, 0, 0, FindWidth: false);
+            FindCoinAxis(image, coin2, 0, (coin1.yEnd + 1), FindWidth: false);
 
             return new List<Rectangle>() {
-                new Rectangle(coin1X[0], coin1Y[0], coin1X[1]-coin1X[0], coin1Y[1]-coin1Y[0]),
-                new Rectangle(coin2X[0], coin2Y[0], coin2X[1]-coin2X[0], coin2Y[1]-coin2Y[0]),
+                coin1.GetRectangle(),
+                coin2.GetRectangle(),
             };
         }
 
@@ -20,7 +27,6 @@
         {
             // Color similarity formula (range 0-20 is similar, 50-100 or >100 is not similar)
             double distance = Math.Sqrt(Math.Pow(pixel1.R - pixel2.R, 2) + Math.Pow(pixel1.G - pixel2.G, 2) + Math.Pow(pixel1.B - pixel2.B, 2));
-
             return distance;
         }
 
@@ -39,17 +45,17 @@
             }
             else
             {
-                int counter = 0;
-                for (int i = startY+5; i < image.Height; i++)
+                int tolerance = 0;
+                for (int i = startY; i < image.Height; i++)
                 {
                     Color currentPixel = image.GetPixel(startX, i);
 
                     // If pixel is similar with backgroundColor, means end of the coin
                     if (PixelColorSimilarity(currentPixel, backgroundColor) < 50)
                     {
-                        if(counter > 5)
+                        if(tolerance > 5)
                             return i;
-                        counter += 1;
+                        tolerance += 1;
                     }
                 }
             }
@@ -57,13 +63,12 @@
             return -1;
         }
 
-        public int[] FindCoinAxis(Bitmap image, int argX, int argY, bool FindWidth)
+        public void FindCoinAxis(Bitmap image, Coin coin, int argX, int argY, bool FindWidth)
         {
+            /* Finding x or y axis of the object (start and end) according to FindWidth argument */
+
             // Color lastPixel = image.GetPixel(argX, argY);
             Color currentPixel;
-
-            int start = -1;
-            int end = -1;
 
             Color backgroundColor = FindBackgroundColor(image);
 
@@ -85,41 +90,42 @@
                             */
 
                             // First coin start
-                            start = i;
-                            end = FindEndOfCoin(image, i, j, FindWidth, backgroundColor);
+                            coin.xStart = i;
+                            coin.xEnd = FindEndOfCoin(image, i, j, FindWidth, backgroundColor);
 
                             // Drawing red lines on coin
-                            using (var graphics = Graphics.FromImage(image))
-                            {
-                                graphics.DrawLine(redPen, start, j, end, j);
-                            }
+                            using var graphics = Graphics.FromImage(image);
+                            graphics.DrawLine(redPen, coin.xStart, j, coin.xEnd, j);
 
+                            return;
                             // lastPixel = currentPixel;
-                            return new int[] { start, end };
+                            // return new int[] { start, end };
                         }
                         else
                         {
-                            start = i;
-                            end = FindEndOfCoin(image, j, i, FindWidth, backgroundColor);
+                            coin.yStart = i;
+                            coin.yEnd = FindEndOfCoin(image, j, i, FindWidth, backgroundColor);
 
                             // Drawing red lines on coin
-                            using (var graphics = Graphics.FromImage(image))
-                            {
-                                graphics.DrawLine(redPen, j, start, j, end);
-                            }
+                            using var graphics = Graphics.FromImage(image);
+                            graphics.DrawLine(redPen, j, coin.yStart, j, coin.yEnd);
 
+                            return;
                             // lastPixel = currentPixel;
-                            return new int[] { start, end };
+                            // return new int[] { start, end , j};
                         }
                     }
                 }
             }
 
-            return new int[] { start, end };
+            // return new int[] { start, end };
         }
     
-        public Color FindBackgroundColor(Bitmap image)
+        public static Color FindBackgroundColor(Bitmap image)
         {
+            /* Detecting background color by scanning small part of the image and returning average RGB */
+
+            // Using %40 of the image to scan the background
             int smallWidth = (int)(image.Width * 0.4);
             int smallHeight = (int)(image.Height * 0.4);
 
@@ -134,9 +140,9 @@
                     totalB += currentPixel.B;
                 }
             }
-
+            
+            // Returning average of the total rgb
             int totalPixel = smallHeight * smallWidth;
-
             return Color.FromArgb(
                 totalR / totalPixel,
                 totalG / totalPixel,
