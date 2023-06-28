@@ -42,7 +42,7 @@ Drawing Red Lines for Coins Width
 
 <br>
 
-<img src="images/6-DrawingRedLineForBothCoins.png">
+<img src="images/6-DrawingRedLinesForBothCoins.png">
 
 Drawing Red Lines For Both Coins
 
