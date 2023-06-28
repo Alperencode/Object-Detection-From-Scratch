@@ -9,43 +9,48 @@ namespace CoinDotDetection
 
         public void LoadImage()
         {
-            Bitmap originalImage = new Bitmap("Coins.jpeg");
-            Bitmap image = new Bitmap("Coins.jpeg");
+            // Creating image bitmaps
+            Bitmap originalImage = new("Coins.jpeg");
+            Bitmap image = new("Coins.jpeg");
 
-            DetectCoins detectCoins = new DetectCoins();
+            // Initializing pens
+            Pen redPen = new(Color.Red, 3);
+            Pen greenPen = new(Color.Green, 15);
 
-            List<Rectangle> coins = detectCoins.DetecCoinsInImage(image);
+            // Creating DetectCoins instance
+            DetectCoins detectCoins = new();
 
-            Pen redPen = new Pen(Color.Red, 3);
+            // Calling DetectCoinsInImage function to detect coins and return Rectangle list
+            List<Rectangle> coins = detectCoins.DetectCoinsInImage(image);
+
+            // Drawing rectangle using coins
+            var graphics = Graphics.FromImage(image);
             foreach (Rectangle coin in coins)
-            {
-                using (var graphics = Graphics.FromImage(image))
-                {
-                    graphics.DrawRectangle(redPen, coin);
-                }
-            }
+                graphics.DrawRectangle(redPen, coin);
 
+            // Creating coin bitmaps using coins list
             Bitmap coin1 = originalImage.Clone(coins[0], originalImage.PixelFormat);
             Bitmap coin2 = originalImage.Clone(coins[1], originalImage.PixelFormat);
 
-            FindDot findDot = new FindDot();
+            // Creating findDot instance
+            FindDot findDot = new();
 
+            // Calling FindCoinWithDot and assigning it to bitmap var
             Bitmap coinWithDot = findDot.FindCoinWithDot(coin1, coin2);
 
+            // Placing Picture Boxes
             CoinWithDotPictureBox.Image= coinWithDot;
             originalPictureBox.Image = image;
             coin1PictureBox.Image = coin1;
             coin2PictureBox.Image = coin2;
 
-            Pen greenPen = new Pen(Color.Green, 15);
-            foreach (Rectangle coin in coins)
-            {
-                using (var graphics = Graphics.FromImage(originalImage))
-                {
-                    graphics.DrawEllipse(greenPen, findDot.FindCoinWithDot(originalImage, coins[0], coins[1]));
-                }
-            }
+            // Drawing elipse to coin with dot
+            graphics = Graphics.FromImage(originalImage);
 
+            // Calling overrided FindCoinWithDot function to return Rectangle instance
+            graphics.DrawEllipse(greenPen, findDot.FindCoinWithDot(originalImage, coins));
+
+            // Placing coin with elipse image to picture box
             CoinComparePictureBox.Image = originalImage;
         }
 
