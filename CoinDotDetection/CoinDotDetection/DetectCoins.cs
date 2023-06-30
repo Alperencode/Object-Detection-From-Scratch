@@ -2,7 +2,7 @@
 {
     internal class DetectCoins
     {
-        public List<Rectangle> DetecCoinsInImage(Bitmap image)
+        public List<Rectangle> DetectCoinsInImage(Bitmap image)
         {
             Coin coin1 = new();
             Coin coin2 = new();
@@ -11,7 +11,8 @@
             FindCoinAxis(image, coin1, 0, 0, FindWidth: true);
             FindCoinAxis(image, coin2, (coin1.xEnd + 1), 0, FindWidth: true);
 
-            /* Need to match widths and heights with the right coin
+            /* 
+             * Need to match widths and heights with the right coin
              * Currently it's not implemented and causes logic bugs
              */
             FindCoinAxis(image, coin1, 0, 0, FindWidth: false);
@@ -38,9 +39,7 @@
                 {
                     // If pixel is similar with backgroundColor, means end of the coin
                     if (PixelColorSimilarity(image.GetPixel(i, startY), backgroundColor) < 25)
-                    {
                         return i;
-                    }
                 }
             }
             else
