@@ -48,6 +48,8 @@
             this.BSWTrackbarLabel = new System.Windows.Forms.Label();
             this.BSHTrackbarLabel = new System.Windows.Forms.Label();
             this.runButton = new System.Windows.Forms.Button();
+            this.BSLabel = new System.Windows.Forms.Label();
+            this.BackgroundScanInput = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.originalPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.coin1PictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.coin2PictureBox)).BeginInit();
@@ -56,6 +58,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.BSWTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BSHTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pixelToleranceInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BackgroundScanInput)).BeginInit();
             this.SuspendLayout();
             // 
             // originalPictureBox
@@ -187,11 +190,11 @@
             // 
             this.pixelToleranceLabel.AutoSize = true;
             this.pixelToleranceLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.pixelToleranceLabel.Location = new System.Drawing.Point(1019, 622);
+            this.pixelToleranceLabel.Location = new System.Drawing.Point(1014, 609);
             this.pixelToleranceLabel.Name = "pixelToleranceLabel";
-            this.pixelToleranceLabel.Size = new System.Drawing.Size(139, 28);
+            this.pixelToleranceLabel.Size = new System.Drawing.Size(148, 28);
             this.pixelToleranceLabel.TabIndex = 13;
-            this.pixelToleranceLabel.Text = "Pixel Tolerance";
+            this.pixelToleranceLabel.Text = "Pixel Tolerance :";
             // 
             // BSWTrackbar
             // 
@@ -217,7 +220,7 @@
             // 
             // pixelToleranceInput
             // 
-            this.pixelToleranceInput.Location = new System.Drawing.Point(1174, 622);
+            this.pixelToleranceInput.Location = new System.Drawing.Point(1226, 610);
             this.pixelToleranceInput.Name = "pixelToleranceInput";
             this.pixelToleranceInput.Size = new System.Drawing.Size(60, 27);
             this.pixelToleranceInput.TabIndex = 18;
@@ -247,19 +250,43 @@
             // 
             // runButton
             // 
-            this.runButton.Location = new System.Drawing.Point(1119, 676);
+            this.runButton.Location = new System.Drawing.Point(1135, 698);
             this.runButton.Name = "runButton";
-            this.runButton.Size = new System.Drawing.Size(115, 42);
+            this.runButton.Size = new System.Drawing.Size(99, 29);
             this.runButton.TabIndex = 21;
             this.runButton.Text = "Run";
             this.runButton.UseVisualStyleBackColor = true;
             this.runButton.Click += new System.EventHandler(this.runButton_Click);
+            // 
+            // BSLabel
+            // 
+            this.BSLabel.AutoSize = true;
+            this.BSLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BSLabel.Location = new System.Drawing.Point(1014, 654);
+            this.BSLabel.Name = "BSLabel";
+            this.BSLabel.Size = new System.Drawing.Size(193, 28);
+            this.BSLabel.TabIndex = 22;
+            this.BSLabel.Text = "Background Scan % :";
+            // 
+            // BackgroundScanInput
+            // 
+            this.BackgroundScanInput.Location = new System.Drawing.Point(1226, 653);
+            this.BackgroundScanInput.Name = "BackgroundScanInput";
+            this.BackgroundScanInput.Size = new System.Drawing.Size(60, 27);
+            this.BackgroundScanInput.TabIndex = 23;
+            this.BackgroundScanInput.Value = new decimal(new int[] {
+            40,
+            0,
+            0,
+            0});
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1387, 739);
+            this.Controls.Add(this.BackgroundScanInput);
+            this.Controls.Add(this.BSLabel);
             this.Controls.Add(this.runButton);
             this.Controls.Add(this.BSHTrackbarLabel);
             this.Controls.Add(this.BSWTrackbarLabel);
@@ -291,6 +318,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.BSWTrackbar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BSHTrackbar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pixelToleranceInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BackgroundScanInput)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -318,5 +346,7 @@
         private Label BSWTrackbarLabel;
         private Label BSHTrackbarLabel;
         private Button runButton;
+        private Label BSLabel;
+        public NumericUpDown BackgroundScanInput;
     }
 }

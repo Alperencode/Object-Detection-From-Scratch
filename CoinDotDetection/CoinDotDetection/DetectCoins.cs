@@ -147,13 +147,13 @@
             // return new int[] { start, end };
         }
     
-        public static Color FindBackgroundColor(Bitmap image)
+        public Color FindBackgroundColor(Bitmap image)
         {
             /* Detecting background color by scanning small part of the image and returning average RGB */
 
             // Using %40 of the image to scan the background
-            int smallWidth = (int)(image.Width * 0.4);
-            int smallHeight = (int)(image.Height * 0.4);
+            int smallWidth = (int)(image.Width * form.GetBackgroundScan * 0.01);
+            int smallHeight = (int)(image.Height * form.GetBackgroundScan * 0.01);
 
             int totalR = 0, totalG = 0, totalB = 0;
             for (int i = 0; i < smallWidth; i++)

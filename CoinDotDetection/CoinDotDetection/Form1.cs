@@ -79,5 +79,6 @@ namespace CoinDotDetection
         public int GetBSWValue { get { return BSWTrackbar.Value; } }
         public int GetBSHValue { get { return BSHTrackbar.Value; } }
         public int GetPixelTolerance { get { return (int)pixelToleranceInput.Value; } }
+        public int GetBackgroundScan { get { return (int)BackgroundScanInput.Value; } }
     }
 }
