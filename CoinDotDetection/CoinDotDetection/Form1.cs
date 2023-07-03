@@ -10,8 +10,8 @@ namespace CoinDotDetection
         public void LoadImage()
         {
             // Creating image bitmaps
-            Bitmap originalImage = new("Coins.jpeg");
-            Bitmap image = new("Coins.jpeg");
+            Bitmap originalImage = new("CoinsFlipped.jpeg");
+            Bitmap image = new("CoinsFlipped.jpeg");
 
             // Initializing pens
             Pen redPen = new(Color.Red, 3);

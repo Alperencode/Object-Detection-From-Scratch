@@ -16,7 +16,15 @@
              * Currently it's not implemented and causes logic bugs
              */
             FindCoinAxis(image, coin1, 0, 0, FindWidth: false);
-            FindCoinAxis(image, coin2, 0, (coin1.yEnd + 1), FindWidth: false);
+            if (Math.Abs(coin1.temp - coin1.xStart) > Math.Abs(coin1.temp - coin2.xStart))
+            {
+                // Swap axis to match the right coin
+                coin2.yStart = coin1.yStart;
+                coin2.yEnd = coin1.yEnd;
+                FindCoinAxis(image, coin1, 0, (coin2.yEnd + 1), FindWidth: false);
+            }
+            else
+                FindCoinAxis(image, coin2, 0, (coin1.yEnd + 1), FindWidth: false);
 
             return new List<Rectangle>() {
                 coin1.GetRectangle(),
@@ -52,7 +60,7 @@
                     // If pixel is similar with backgroundColor, means end of the coin
                     if (PixelColorSimilarity(currentPixel, backgroundColor) < 50)
                     {
-                        if(tolerance > 5)
+                        if(tolerance > 15)
                             return i;
                         tolerance += 1;
                     }
@@ -77,7 +85,7 @@
                 {
                     currentPixel = image.GetPixel((FindWidth ? i : j), (FindWidth ? j : i));
                     double backgroundSimilarity = PixelColorSimilarity(currentPixel, backgroundColor);
-                    Pen redPen = new Pen(Color.Red, 3);
+                    Pen redPen = new(Color.Red, 3);
 
                     // If not similar with gray, means found the coin
                     if (backgroundSimilarity > 150)
@@ -103,6 +111,7 @@
                         else
                         {
                             coin.yStart = i;
+                            coin.temp = j;
                             coin.yEnd = FindEndOfCoin(image, j, i, FindWidth, backgroundColor);
 
                             // Drawing red lines on coin
