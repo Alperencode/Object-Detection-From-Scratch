@@ -4,6 +4,11 @@ namespace CoinDotDetection
 {
     public partial class Form1 : Form
     {
+
+        // Initializing pens
+        Pen redPen = new(Color.Red, 3);
+        Pen greenPen = new(Color.Green, 10);
+
         public Form1()
         {
             InitializeComponent();
@@ -12,18 +17,18 @@ namespace CoinDotDetection
         public void Main()
         {
             // Creating image bitmaps
-            Bitmap originalImage = new("CoinsFlipped.jpeg");
-            Bitmap image = new("CoinsFlipped.jpeg");
-
-            // Initializing pens
-            Pen redPen = new(Color.Red, 3);
-            Pen greenPen = new(Color.Green, 10);
+            Bitmap originalImage = new("Coins.jpeg");
+            Bitmap image = new("Coins.jpeg");
 
             // Creating DetectCoins instance
             DetectCoins detectCoins = new DetectCoins(this);
 
             // Calling DetectCoinsInImage function to detect coins and return Rectangle list
             List<Rectangle> coins = detectCoins.DetectCoinsInImage(image);
+
+            // If there is no coin found, return (Error Handling)
+            if(!coins.Any())
+                return;
 
             // Drawing rectangle using coins
             var graphics = Graphics.FromImage(image);
@@ -58,27 +63,32 @@ namespace CoinDotDetection
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Call Main function when Form loads
             Main();
         }
 
-        private void BSWTrackbar_Scroll(object sender, EventArgs e)
-        {
-            BSWTrackbarLabel.Text = BSWTrackbar.Value.ToString();
-        }
-
-        private void BSHTrackbar_Scroll(object sender, EventArgs e)
-        {
-            BSHTrackbarLabel.Text = BSHTrackbar.Value.ToString();
-        }
+        // Update Trackbars value labels
+        private void BSWTrackbar_Scroll(object sender, EventArgs e) => BSWTrackbarLabel.Text = BSWTrackbar.Value.ToString();
+        private void BSHTrackbar_Scroll(object sender, EventArgs e) => BSHTrackbarLabel.Text = BSHTrackbar.Value.ToString();
+        private void BSTrackbar_Scroll(object sender, EventArgs e) => BSTrackbarLabel.Text = BSTrackbar.Value.ToString();
 
         private void runButton_Click(object sender, EventArgs e)
         {
+            // Call Main function when run button clicked
             Main();
         }
 
+        public void ChangeDetectLabel(string text, Color color)
+        {
+            detectLabel.Text = text;
+            detectLabel.ForeColor = color;
+        }
+
+        public int GetBSValue { get { return BSTrackbar.Value; } }
         public int GetBSWValue { get { return BSWTrackbar.Value; } }
         public int GetBSHValue { get { return BSHTrackbar.Value; } }
         public int GetPixelTolerance { get { return (int)pixelToleranceInput.Value; } }
         public int GetBackgroundScan { get { return (int)BackgroundScanInput.Value; } }
+        
     }
 }

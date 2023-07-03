@@ -14,6 +14,7 @@
 
         public List<Rectangle> DetectCoinsInImage(Bitmap image)
         {
+            // Initializing Coin instances
             Coin coin1 = new();
             Coin coin2 = new();
 
@@ -40,6 +41,16 @@
             else
                 FindCoinAxis(image, coin2, 0, (coin1.yEnd + 1), FindWidth: false);
 
+            // Check if coins are not detected (Width or Height below zero)
+            if (coin1.CheckCoin() || coin2.CheckCoin())
+            {
+                // If coins not detected, change label and return empty list
+                form.ChangeDetectLabel("Coins not Detected", Color.Red);
+                return new List<Rectangle>();
+            }
+
+            // Else change label and return Rectangle list
+            form.ChangeDetectLabel("Coins Detected", Color.Green);
             return new List<Rectangle>() {
                 coin1.GetRectangle(),
                 coin2.GetRectangle(),
@@ -55,47 +66,38 @@
         public int FindEndOfCoin(Bitmap image, int startX, int startY, bool FindWidth, Color backgroundColor)
         {
             int tolerance = 0;
-
-            if (FindWidth)
+            /* 
+             * If FindWidth is true:
+             * - Start from startX until image.Width and current pixel is (i, startY)
+             * Else:
+             * - Start from startY until image.Height and current pixel is (startX, i)
+             */
+            for (int i = (FindWidth ? startX : startY); i < (FindWidth ? image.Width : image.Height); i++)
             {
-                for (int i = startX; i < image.Width; i++)
+                Color currentPixel = image.GetPixel((FindWidth ? i : startX), (FindWidth ? startY : i));
+                // If pixel is similar with backgroundColor, means end of the coin
+                if (PixelColorSimilarity(currentPixel, backgroundColor) < (FindWidth ? form.GetBSWValue : form.GetBSHValue))
                 {
-                    // If pixel is similar with backgroundColor, means end of the coin
-                    if (PixelColorSimilarity(image.GetPixel(i, startY), backgroundColor) < form.GetBSWValue)
-                    {
-                        if (tolerance > form.GetPixelTolerance)
-                            return i;
-                        tolerance += 1;
-                    }
+                    if (tolerance > form.GetPixelTolerance)
+                        return i;
+                    tolerance += 1;
                 }
             }
-            else
-            {
-                for (int i = startY; i < image.Height; i++)
-                {
-                    Color currentPixel = image.GetPixel(startX, i);
-
-                    // If pixel is similar with backgroundColor, means end of the coin
-                    if (PixelColorSimilarity(currentPixel, backgroundColor) < form.GetBSHValue)
-                    {
-                        if(tolerance > form.GetPixelTolerance)
-                            return i;
-                        tolerance += 1;
-                    }
-                }
-            }
-            // throw new Exception("Gray not found");
             return -1;
         }
 
         public void FindCoinAxis(Bitmap image, Coin coin, int argX, int argY, bool FindWidth)
         {
             /* Finding x or y axis of the object (start and end) according to FindWidth argument */
-
-            // Color lastPixel = image.GetPixel(argX, argY);
             Color currentPixel;
 
             Color backgroundColor = FindBackgroundColor(image);
+
+            /* If FindWidth is true:
+             * - Start from argX until image.Width and current pixel is (i, j)
+             * Else:
+             * - Start from argX until image.Height and current pixel is (j, i)
+             */
 
             for (int i = argX; i < (FindWidth ? image.Width : image.Height); i++)
             {
@@ -106,25 +108,19 @@
                     Pen redPen = new(Color.Red, 3);
 
                     // If not similar with gray, means found the coin
-                    if (backgroundSimilarity > 150)
+                    if (backgroundSimilarity > form.GetBSValue)
                     {
                         if (FindWidth)
                         {
-                            /* Painting coin to red (DEBUG)
-                            image.SetPixel(i, j, Color.Red);
-                            */
-
                             // First coin start
                             coin.xStart = i;
                             coin.xEnd = FindEndOfCoin(image, i, j, FindWidth, backgroundColor);
 
                             // Drawing red lines on coin
-                            using var graphics = Graphics.FromImage(image);
-                            graphics.DrawLine(redPen, coin.xStart, j, coin.xEnd, j);
+                            // using var graphics = Graphics.FromImage(image);
+                            // graphics.DrawLine(redPen, coin.xStart, j, coin.xEnd, j);
 
                             return;
-                            // lastPixel = currentPixel;
-                            // return new int[] { start, end };
                         }
                         else
                         {
@@ -133,18 +129,14 @@
                             coin.yEnd = FindEndOfCoin(image, j, i, FindWidth, backgroundColor);
 
                             // Drawing red lines on coin
-                            using var graphics = Graphics.FromImage(image);
-                            graphics.DrawLine(redPen, j, coin.yStart, j, coin.yEnd);
+                            // using var graphics = Graphics.FromImage(image);
+                            // graphics.DrawLine(redPen, j, coin.yStart, j, coin.yEnd);
 
                             return;
-                            // lastPixel = currentPixel;
-                            // return new int[] { start, end , j};
                         }
                     }
                 }
             }
-
-            // return new int[] { start, end };
         }
     
         public Color FindBackgroundColor(Bitmap image)
