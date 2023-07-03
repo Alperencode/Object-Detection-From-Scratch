@@ -6,7 +6,7 @@
         public int xEnd { get; set; }
         public int yStart { get; set; }
         public int yEnd { get; set; }
-        public int temp { get; set; }
+        public int tempX { get; set; }
 
         public Rectangle GetRectangle()
         {

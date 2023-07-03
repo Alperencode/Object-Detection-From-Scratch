@@ -9,7 +9,7 @@
             int height = Math.Min(coin1.Height, coin2.Height);
 
             // Initializing DetectCoins instance to use PixelColorSimilarity
-            DetectCoins detection = new();
+            DetectCoins detection = new DetectCoins();
 
             // Counter for both coins to count dots
             int coin1Dots = 0;

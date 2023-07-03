@@ -2,21 +2,35 @@
 {
     internal class DetectCoins
     {
+        public Form1 form { get; set; }
+
+        // Constructer with form
+        public DetectCoins(Form1 form) {
+            this.form = form;
+        }
+
+        // Constructer override
+        public DetectCoins() { }
+
         public List<Rectangle> DetectCoinsInImage(Bitmap image)
         {
             Coin coin1 = new();
             Coin coin2 = new();
 
-
             FindCoinAxis(image, coin1, 0, 0, FindWidth: true);
             FindCoinAxis(image, coin2, (coin1.xEnd + 1), 0, FindWidth: true);
 
-            /* 
-             * Need to match widths and heights with the right coin
-             * Currently it's not implemented and causes logic bugs
+            // Logic for matching the right coin
+            /*
+             * Logic: 
+             * 1) Find the first coin both Y axis and store the temporary X axis when find them
+             * 2) If statement to determine which coin's X axis is closer to temporary X
+             * 3) This statement matches the right coin
+             * 3.1) If coin2 is closer to temporary X that means first Y axis is for coin2, then swap the values and proceed for coin1
+             * 3.2) Else coin1 is the right coin for Y axis, proceed for coin2
              */
             FindCoinAxis(image, coin1, 0, 0, FindWidth: false);
-            if (Math.Abs(coin1.temp - coin1.xStart) > Math.Abs(coin1.temp - coin2.xStart))
+            if (Math.Abs(coin1.tempX - coin1.xStart) > Math.Abs(coin1.tempX - coin2.xStart))
             {
                 // Swap axis to match the right coin
                 coin2.yStart = coin1.yStart;
@@ -35,32 +49,36 @@
         public double PixelColorSimilarity(Color pixel1, Color pixel2)
         {
             // Color similarity formula (range 0-20 is similar, 50-100 or >100 is not similar)
-            double distance = Math.Sqrt(Math.Pow(pixel1.R - pixel2.R, 2) + Math.Pow(pixel1.G - pixel2.G, 2) + Math.Pow(pixel1.B - pixel2.B, 2));
-            return distance;
+            return Math.Sqrt(Math.Pow(pixel1.R - pixel2.R, 2) + Math.Pow(pixel1.G - pixel2.G, 2) + Math.Pow(pixel1.B - pixel2.B, 2));
         }
 
         public int FindEndOfCoin(Bitmap image, int startX, int startY, bool FindWidth, Color backgroundColor)
         {
-            if(FindWidth)
+            int tolerance = 0;
+
+            if (FindWidth)
             {
                 for (int i = startX; i < image.Width; i++)
                 {
                     // If pixel is similar with backgroundColor, means end of the coin
-                    if (PixelColorSimilarity(image.GetPixel(i, startY), backgroundColor) < 25)
-                        return i;
+                    if (PixelColorSimilarity(image.GetPixel(i, startY), backgroundColor) < form.GetBSWValue)
+                    {
+                        if (tolerance > form.GetPixelTolerance)
+                            return i;
+                        tolerance += 1;
+                    }
                 }
             }
             else
             {
-                int tolerance = 0;
                 for (int i = startY; i < image.Height; i++)
                 {
                     Color currentPixel = image.GetPixel(startX, i);
 
                     // If pixel is similar with backgroundColor, means end of the coin
-                    if (PixelColorSimilarity(currentPixel, backgroundColor) < 50)
+                    if (PixelColorSimilarity(currentPixel, backgroundColor) < form.GetBSHValue)
                     {
-                        if(tolerance > 15)
+                        if(tolerance > form.GetPixelTolerance)
                             return i;
                         tolerance += 1;
                     }
@@ -111,7 +129,7 @@
                         else
                         {
                             coin.yStart = i;
-                            coin.temp = j;
+                            coin.tempX = j;
                             coin.yEnd = FindEndOfCoin(image, j, i, FindWidth, backgroundColor);
 
                             // Drawing red lines on coin

@@ -1,3 +1,5 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace CoinDotDetection
 {
     public partial class Form1 : Form
@@ -7,7 +9,7 @@ namespace CoinDotDetection
             InitializeComponent();
         }
 
-        public void LoadImage()
+        public void Main()
         {
             // Creating image bitmaps
             Bitmap originalImage = new("CoinsFlipped.jpeg");
@@ -15,10 +17,10 @@ namespace CoinDotDetection
 
             // Initializing pens
             Pen redPen = new(Color.Red, 3);
-            Pen greenPen = new(Color.Green, 15);
+            Pen greenPen = new(Color.Green, 10);
 
             // Creating DetectCoins instance
-            DetectCoins detectCoins = new();
+            DetectCoins detectCoins = new DetectCoins(this);
 
             // Calling DetectCoinsInImage function to detect coins and return Rectangle list
             List<Rectangle> coins = detectCoins.DetectCoinsInImage(image);
@@ -39,7 +41,7 @@ namespace CoinDotDetection
             Bitmap coinWithDot = findDot.FindCoinWithDot(coin1, coin2);
 
             // Placing Picture Boxes
-            CoinWithDotPictureBox.Image= coinWithDot;
+            CoinWithDotPictureBox.Image = coinWithDot;
             originalPictureBox.Image = image;
             coin1PictureBox.Image = coin1;
             coin2PictureBox.Image = coin2;
@@ -56,7 +58,26 @@ namespace CoinDotDetection
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            LoadImage();
+            Main();
         }
+
+        private void BSWTrackbar_Scroll(object sender, EventArgs e)
+        {
+            BSWTrackbarLabel.Text = BSWTrackbar.Value.ToString();
+        }
+
+        private void BSHTrackbar_Scroll(object sender, EventArgs e)
+        {
+            BSHTrackbarLabel.Text = BSHTrackbar.Value.ToString();
+        }
+
+        private void runButton_Click(object sender, EventArgs e)
+        {
+            Main();
+        }
+
+        public int GetBSWValue { get { return BSWTrackbar.Value; } }
+        public int GetBSHValue { get { return BSHTrackbar.Value; } }
+        public int GetPixelTolerance { get { return (int)pixelToleranceInput.Value; } }
     }
 }
