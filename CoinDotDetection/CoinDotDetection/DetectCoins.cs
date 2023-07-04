@@ -3,15 +3,27 @@
     internal class DetectCoins
     {
         public Form1 form { get; set; }
+        public Color backgroundColor { get; set; }
 
-        // Constructer with form
-        public DetectCoins(Form1 form) {
+        /// <summary>
+        /// Constructer with form and background color
+        /// </summary>
+        /// <param name="image"> Bitmap of image to find background color </param>
+        /// <param name="form"> Form  object to use components </param>
+        public DetectCoins(Bitmap image, Form1 form) {
             this.form = form;
+            backgroundColor = FindBackgroundColor(image);
         }
 
-        // Constructer override
+        /// <summary>
+        /// Constructer with no arguments, initializes DetectCoins
+        /// </summary>
         public DetectCoins() { }
 
+        /// <summary>
+        /// Detects two coins in given image
+        /// </summary>
+        /// <param name="image"> Bitmap of image to detect coins </param>
         public List<Rectangle> DetectCoinsInImage(Bitmap image)
         {
             // Initializing Coin instances
@@ -57,13 +69,24 @@
             };
         }
 
-        public double PixelColorSimilarity(Color pixel1, Color pixel2)
-        {
-            // Color similarity formula (range 0-20 is similar, 50-100 or >100 is not similar)
-            return Math.Sqrt(Math.Pow(pixel1.R - pixel2.R, 2) + Math.Pow(pixel1.G - pixel2.G, 2) + Math.Pow(pixel1.B - pixel2.B, 2));
-        }
+        /// <summary>
+        /// Calculates similarity score between two given pixels
+        /// </summary>
+        /// <param name="pixel1"> First pixel </param>
+        /// <param name="pixel2"> Second pixel </param>
+        /// <returns> Similarity score as double </returns>
+        public double PixelColorSimilarity(Color pixel1, Color pixel2) =>
+            Math.Sqrt(Math.Pow(pixel1.R - pixel2.R, 2) + Math.Pow(pixel1.G - pixel2.G, 2) + Math.Pow(pixel1.B - pixel2.B, 2));
 
-        public int FindEndOfCoin(Bitmap image, int startX, int startY, bool FindWidth, Color backgroundColor)
+        /// <summary>
+        /// Finds end of the coin axis using given image and start value
+        /// </summary>
+        /// <param name="image"> Bitmap of image </param>
+        /// <param name="startX"> X axis to start scanning </param>
+        /// <param name="startY"> Y axis to start scanning </param>
+        /// <param name="FindWidth"> Boolean to determine finding width or height </param>
+        /// <returns> Returns integer value of found axis </returns>
+        public int FindEndOfCoin(Bitmap image, int startX, int startY, bool FindWidth)
         {
             int tolerance = 0;
             /* 
@@ -86,12 +109,18 @@
             return -1;
         }
 
+        /// <summary>
+        /// Finds coin's both axis (`X` or `Y` according to FindWidth) and sets values for given coin
+        /// </summary>
+        /// <param name="image"> Bitmap of image </param>
+        /// <param name="coin"> Coin object to set values </param>
+        /// <param name="argX"> Determines initial X axis to start scaning </param>
+        /// <param name="argY"> Determines initial Y axis to start scaning </param>
+        /// <param name="FindWidth"> Boolean to determine finding X axis or Y axis </param>
         public void FindCoinAxis(Bitmap image, Coin coin, int argX, int argY, bool FindWidth)
         {
             /* Finding x or y axis of the object (start and end) according to FindWidth argument */
             Color currentPixel;
-
-            Color backgroundColor = FindBackgroundColor(image);
 
             /* If FindWidth is true:
              * - Start from argX until image.Width and current pixel is (i, j)
@@ -105,32 +134,28 @@
                 {
                     currentPixel = image.GetPixel((FindWidth ? i : j), (FindWidth ? j : i));
                     double backgroundSimilarity = PixelColorSimilarity(currentPixel, backgroundColor);
-                    Pen redPen = new(Color.Red, 3);
 
-                    // If not similar with gray, means found the coin
+                    // If not similar with background, means found the coin
                     if (backgroundSimilarity > form.GetBSValue)
                     {
                         if (FindWidth)
                         {
-                            // First coin start
+                            // Assign current to xStart
                             coin.xStart = i;
-                            coin.xEnd = FindEndOfCoin(image, i, j, FindWidth, backgroundColor);
 
-                            // Drawing red lines on coin
-                            // using var graphics = Graphics.FromImage(image);
-                            // graphics.DrawLine(redPen, coin.xStart, j, coin.xEnd, j);
+                            // Finding xEnd using FindEndOfCoin method
+                            coin.xEnd = FindEndOfCoin(image, i, j, FindWidth);
 
                             return;
                         }
                         else
                         {
+                            // Assign current to yStart
                             coin.yStart = i;
                             coin.tempX = j;
-                            coin.yEnd = FindEndOfCoin(image, j, i, FindWidth, backgroundColor);
 
-                            // Drawing red lines on coin
-                            // using var graphics = Graphics.FromImage(image);
-                            // graphics.DrawLine(redPen, j, coin.yStart, j, coin.yEnd);
+                            // Finding yEnd using FindEndOfCoin method
+                            coin.yEnd = FindEndOfCoin(image, j, i, FindWidth);
 
                             return;
                         }
@@ -138,7 +163,12 @@
                 }
             }
         }
-    
+
+        /// <summary>
+        /// Finds background color by calculating average RGB of given image
+        /// </summary>
+        /// <param name="image"> Bitmap of image </param>
+        /// <returns> Returns Color object with calculated background RGB </returns>
         public Color FindBackgroundColor(Bitmap image)
         {
             /* Detecting background color by scanning small part of the image and returning average RGB */

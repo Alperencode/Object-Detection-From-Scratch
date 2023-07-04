@@ -21,7 +21,7 @@ namespace CoinDotDetection
             Bitmap image = new("Coins.jpeg");
 
             // Creating DetectCoins instance
-            DetectCoins detectCoins = new DetectCoins(this);
+            DetectCoins detectCoins = new DetectCoins(image, this);
 
             // Calling DetectCoinsInImage function to detect coins and return Rectangle list
             List<Rectangle> coins = detectCoins.DetectCoinsInImage(image);

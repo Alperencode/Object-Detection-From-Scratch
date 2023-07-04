@@ -2,6 +2,12 @@
 {
     internal class FindDot
     {
+        /// <summary>
+        /// Calculates dot number on given coins and returns coin with dot
+        /// </summary>
+        /// <param name="coin1"> First coin bitmap </param>
+        /// <param name="coin2"> Second coin bitmap </param>
+        /// <returns> Returns coin with dot as Bitmap </returns>
         public Bitmap FindCoinWithDot(Bitmap coin1, Bitmap coin2) {
 
             // Selecting smaller width and height
@@ -9,7 +15,7 @@
             int height = Math.Min(coin1.Height, coin2.Height);
 
             // Initializing DetectCoins instance to use PixelColorSimilarity
-            DetectCoins detection = new DetectCoins();
+            DetectCoins detection = new();
 
             // Counter for both coins to count dots
             int coin1Dots = 0;
@@ -27,7 +33,7 @@
                     // Increasing counter using color similarity with `Black` color
                     if (detection.PixelColorSimilarity(coin1Current, Color.Black) < 3)
                         coin1Dots++;
-                    if(detection.PixelColorSimilarity(coin2Current, Color.Black) < 3)
+                    if (detection.PixelColorSimilarity(coin2Current, Color.Black) < 3)
                         coin2Dots++;
                 }
             }
@@ -37,6 +43,12 @@
 
         }
 
+        /// <summary>
+        /// Calculates dot number on given coins and returns coin with dot
+        /// </summary>
+        /// <param name="image"> Bitmap of image </param>
+        /// <param name="coins"> List of Rectangles that represents coins </param>
+        /// <returns> Returns coin with dot as Bitmap </returns>
         public Rectangle FindCoinWithDot(Bitmap image, List<Rectangle> coins)
         {
             // Converting both coins to bitmap
