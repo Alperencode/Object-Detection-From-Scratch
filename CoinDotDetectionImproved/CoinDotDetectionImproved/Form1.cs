@@ -6,7 +6,10 @@ namespace CoinDotDetectionImproved
         {
             InitializeComponent();
         }
-        private void Form1_Load(object sender, EventArgs e)
+
+        private void Form1_Load(object sender, EventArgs e) => Main();
+
+        private void Main()
         {
 
             // Load image as bitmap
@@ -45,12 +48,12 @@ namespace CoinDotDetectionImproved
             {
                 // If the pixel is black but there is no black sequence, turn pixel to white
                 if (source[i] == 0 && source[i + 1] == 0 && source[i + 2] == 0)
-                    if (!Methods.BlackSequenceHorizontal(source, i, 100))
+                    if (!Methods.BlackSequenceHorizontal(source, i, 35))
                         (source[i], source[i + 1], source[i + 2]) = (255, 255, 255);
 
                 // If any of bytes are max but there is black sequence, set byte to min
                 if (source[i] == 255 || source[i + 1] == 255 || source[i + 2] == 255)
-                    if (Methods.BlackSequenceHorizontal(source, i, 100))
+                    if (Methods.BlackSequenceHorizontal(source, i, 35))
                         (source[i], source[i + 1], source[i + 2]) = (0, 0, 0);
             }
 
@@ -58,7 +61,7 @@ namespace CoinDotDetectionImproved
 
             /* DEBUG SECTION */
 
-            Pen pen = new(Color.Red, 30), pen2 = new(Color.Green, 30);
+            Pen pen = new(Color.Red, 25);
 
             // Draw rectangles
             using (var graphics = Graphics.FromImage(image))

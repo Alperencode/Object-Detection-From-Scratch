@@ -66,7 +66,7 @@ namespace CoinDotDetectionImproved
 
         private static int FindHeight(byte[] source, Coin coin, int startIndex)
         {
-            int i = 15, height = 0;
+            int i = 1, height = 0, tolerance = 0;
             int currentByte;
 
             do
@@ -79,8 +79,12 @@ namespace CoinDotDetectionImproved
                 // If found a black pixel, means its end of the coin
                 if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
                 {
-                    coin.EndY = currentByte;
-                    return height;
+                    if(tolerance > 50)
+                    {
+                        coin.EndY = currentByte;
+                        return height;
+                    }
+                    tolerance++;
                 }
 
                 // Else, increase the height
@@ -99,6 +103,7 @@ namespace CoinDotDetectionImproved
             {
                 i++;
 
+                // Iterating to vertically next byte
                 currentByte = middle + (i * coin.ImageWidth * 3);
 
                 if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
@@ -108,7 +113,8 @@ namespace CoinDotDetectionImproved
                     return height;
                 }
 
-                height+=2;
+                // Increasing by two because its starting from half way
+                height += 2;
             } while (true);
 
         }
@@ -120,6 +126,8 @@ namespace CoinDotDetectionImproved
 
             do
             {
+                i++;
+
                 currentByte = middle + (i * 3);
 
                 if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
@@ -129,8 +137,8 @@ namespace CoinDotDetectionImproved
                     return width;
                 }
 
+                // Increasing by two because its starting from half way
                 width += 2;
-                i++;
             } while (true);
 
         }
@@ -142,6 +150,8 @@ namespace CoinDotDetectionImproved
 
             do
             {
+                i++;
+
                 // Iterating to horizontally next byte
                 currentByte = startIndex + (i * 3);
 
@@ -154,8 +164,6 @@ namespace CoinDotDetectionImproved
 
                 // Else, increase the width
                 width++;
-
-                i++;
             } while (true);
 
         }
