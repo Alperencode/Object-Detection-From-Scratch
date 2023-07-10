@@ -3,13 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace CoinDotDetectionImproved
 {
-    internal class ByteArrayMethods
+    internal class Methods
     {
         public Form1? form { get; set; }
-        public ByteArrayMethods(Form1 form) { this.form = form; }
-        public ByteArrayMethods() { }
+        public Methods(Form1 form) { this.form = form; }
+        public Methods() { }
 
-        public List<Coin> DetectCoins(byte[] source, int imageWidth)
+        public static List<Coin> DetectCoins(byte[] source, int imageWidth)
         {
             Coin coin1 = new(imageWidth), coin2 = new(imageWidth);
 
@@ -22,7 +22,7 @@ namespace CoinDotDetectionImproved
             };
         }
 
-        public void FindCoin(byte[] source, Coin coin, int startIndex, bool findFirst)
+        private static void FindCoin(byte[] source, Coin coin, int startIndex, bool findFirst)
         {
             for (int i = startIndex; i < source.Length; i += 3)
             {
@@ -64,7 +64,7 @@ namespace CoinDotDetectionImproved
             }
         }
 
-        public int FindHeight(byte[] source, Coin coin, int startIndex)
+        private static int FindHeight(byte[] source, Coin coin, int startIndex)
         {
             int i = 15, height = 0;
             int currentByte;
@@ -74,7 +74,7 @@ namespace CoinDotDetectionImproved
                 i++;
 
                 // Iterating to vertically next byte
-                currentByte = startIndex + (i * coin.imageWidth * 3);
+                currentByte = startIndex + (i * coin.ImageWidth * 3);
 
                 // If found a black pixel, means its end of the coin
                 if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
@@ -90,33 +90,33 @@ namespace CoinDotDetectionImproved
 
         }
 
-        public int FindHeight(byte[] source, Coin coin)
+        private static int FindHeight(byte[] source, Coin coin)
         {
-            int currentByte, height = 1, i = 15;
+            int currentByte, height = 0, i = 0;
             int middle = coin.EndX - ((coin.Width / 2) * 3);
 
             do
             {
                 i++;
 
-                currentByte = middle + (i * coin.imageWidth * 3);
+                currentByte = middle + (i * coin.ImageWidth * 3);
 
                 if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
                 {
                     coin.EndY = currentByte;
-                    coin.StartY = coin.EndY - height * 3;
+                    coin.StartY = coin.EndY - (i * coin.ImageWidth * 3) * 2;
                     return height;
                 }
 
-                height++;
+                height+=2;
             } while (true);
 
         }
 
-        public int FindWidth(byte[] source, Coin coin)
+        private static int FindWidth(byte[] source, Coin coin)
         {
             int currentByte, width = 0, i = 0;
-            int middle = coin.EndY - ((coin.Height / 2) * coin.imageWidth * 3);
+            int middle = coin.EndY - ((coin.Height / 2) * coin.ImageWidth * 3);
 
             do
             {
@@ -135,7 +135,7 @@ namespace CoinDotDetectionImproved
 
         }
 
-        public int FindWidth(byte[] source, Coin coin, int startIndex)
+        private static int FindWidth(byte[] source, Coin coin, int startIndex)
         {
             int i = 1, width = 0;
             int currentByte;
@@ -160,7 +160,7 @@ namespace CoinDotDetectionImproved
 
         }
 
-        public bool BlackSequenceHorizontal(byte[] source, int startIndex, int length)
+        public static bool BlackSequenceHorizontal(byte[] source, int startIndex, int length)
         {
             int counter = 0;
             int currentByte;
@@ -183,7 +183,7 @@ namespace CoinDotDetectionImproved
             return counter >= length / 1.5;
         }
 
-        public bool BlackSequenceVertical(byte[] source, int startIndex, int length, int width)
+        public static bool BlackSequenceVertical(byte[] source, int startIndex, int length, int width)
         {
             int counter = 0;
             int currentByte;
@@ -211,7 +211,7 @@ namespace CoinDotDetectionImproved
         /// </summary>
         /// <param name="bitmap"> Bitmap source to copy </param>
         /// <returns> Byte array of the bitmap </returns>
-        public byte[] BitmapToBytes(Bitmap bitmap)
+        public static byte[] BitmapToBytes(Bitmap bitmap)
         {
             // Creating rectangle using bitmap's width and height
             Rectangle rect = new(0, 0, bitmap.Width, bitmap.Height);
@@ -245,7 +245,7 @@ namespace CoinDotDetectionImproved
         /// <param name="width"> Bitmap image width </param>
         /// <param name="height"> Bitmap image height </param>
         /// <returns> Bitmap object with given byte array source </returns>
-        public Bitmap ByteToBitmap(byte[] bytes, PixelFormat bmpFormat, int width, int height)
+        public static Bitmap ByteToBitmap(byte[] bytes, PixelFormat bmpFormat, int width, int height)
         {
 
             // Initializing bitmap and rectangle
@@ -265,7 +265,7 @@ namespace CoinDotDetectionImproved
             return bmp;
         }
 
-        public Color FindBackground(byte[] source, int length)
+        public static Color FindBackground(byte[] source, int length)
         {
             // Not implemented correctly, going to fix later
             int totalR = 0;

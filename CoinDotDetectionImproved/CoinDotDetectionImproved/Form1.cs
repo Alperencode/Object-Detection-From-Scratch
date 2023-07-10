@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace CoinDotDetectionImproved
 {
     public partial class Form1 : Form
@@ -11,9 +9,6 @@ namespace CoinDotDetectionImproved
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            // Initialize methods object
-            ByteArrayMethods methods = new();
-
             // Load image as bitmap
             // 6ms
             Bitmap image = new("CoinsLarge.jpeg");
@@ -22,9 +17,9 @@ namespace CoinDotDetectionImproved
 
             // Convert image's bitmap to byte array
             // 2ms
-            byte[] source = methods.BitmapToBytes(image);
+            byte[] source = Methods.BitmapToBytes(image);
 
-            Color backgroundColor = methods.FindBackground(source, source.Length / 10);
+            Color backgroundColor = Methods.FindBackground(source, source.Length / 10);
 
             // Convert image to black and white
             // 10 ms
@@ -50,54 +45,43 @@ namespace CoinDotDetectionImproved
             {
                 // If the pixel is black but there is no black sequence, turn pixel to white
                 if (source[i] == 0 && source[i + 1] == 0 && source[i + 2] == 0)
-                    if (!methods.BlackSequenceHorizontal(source, i, 100))
+                    if (!Methods.BlackSequenceHorizontal(source, i, 100))
                         (source[i], source[i + 1], source[i + 2]) = (255, 255, 255);
 
                 // If any of bytes are max but there is black sequence, set byte to min
                 if (source[i] == 255 || source[i + 1] == 255 || source[i + 2] == 255)
-                    if (methods.BlackSequenceHorizontal(source, i, 100))
+                    if (Methods.BlackSequenceHorizontal(source, i, 100))
                         (source[i], source[i + 1], source[i + 2]) = (0, 0, 0);
             }
 
-            List<Coin> coins = methods.DetectCoins(source, Width);
+            List<Coin> coins = Methods.DetectCoins(source, Width);
 
             /* DEBUG SECTION */
-            AllocConsole();
-            int[] C1X1 = coins[0].GetCoordinateXStart();
-            int[] C2X1 = coins[1].GetCoordinateXStart();
-
-            int[] C1X2 = coins[0].GetCoordinateXEnd();
-            int[] C2X2 = coins[1].GetCoordinateXEnd();
-                
-            int[] C1Y1 = coins[0].GetCoordinateYStart();
-            int[] C2Y1 = coins[1].GetCoordinateYStart();
-
-            int[] C1Y2 = coins[0].GetCoordinateYEnd();
-            int[] C2Y2 = coins[1].GetCoordinateYEnd();
 
             Pen pen = new(Color.Red, 30), pen2 = new(Color.Green, 30);
 
+            // Draw rectangles
             using (var graphics = Graphics.FromImage(image))
             {
-                graphics.DrawLine(pen, C1X1[0], C1X1[1], C1X2[0], C1X2[1]);
-                graphics.DrawLine(pen2, C2X1[0], C2X1[1], C2X2[0], C2X2[1]);
-
-                graphics.DrawLine(pen, C1Y1[0], C1Y1[1], C1Y2[0], C1Y2[1]);
-                graphics.DrawLine(pen2, C2Y1[0], C2Y1[1], C2Y2[0], C2Y2[1]);
+                graphics.DrawRectangle(pen, coins[0].GetRectangle());
+                graphics.DrawRectangle(pen, coins[1].GetRectangle());
             }
 
+            // Draw width and height lines for both coins
+            coins[0].DrawWidthLine(image);
+            coins[0].DrawHeightLine(image);
+
+            coins[1].DrawWidthLine(image);
+            coins[1].DrawHeightLine(image);
+
+            // Place the debug image
             picture2.Image = image;
             /* DEBUG SECTION END */
 
             // 2ms
-            Bitmap newImage = methods.ByteToBitmap(source, image.PixelFormat, image.Width, image.Height);
+            Bitmap newImage = Methods.ByteToBitmap(source, image.PixelFormat, image.Width, image.Height);
 
             picture.Image = newImage;
         }
-
-        // Allocating Console to Debug
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
     }
 }
