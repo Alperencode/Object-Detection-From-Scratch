@@ -6,39 +6,158 @@ namespace CoinDotDetectionImproved
     internal class ByteArrayMethods
     {
         public Form1? form { get; set; }
-        public ByteArrayMethods(Form1 form)
-        {
-            this.form = form;
-        }
+        public ByteArrayMethods(Form1 form) { this.form = form; }
         public ByteArrayMethods() { }
 
-        public int FindHeight(byte[] source, int startIndex, int width)
+        public List<Coin> DetectCoins(byte[] source, int imageWidth)
         {
-            int currentByte, currentHeight;
-            int maxHeight = -1;
+            Coin coin1 = new(imageWidth), coin2 = new(imageWidth);
 
-            for (int i = startIndex; ; i++)
-            {
-                // Iterating to vertically next byte
-                currentByte = startIndex + (i * width * 3);
+            FindCoin(source, coin1, 0, true);
+            FindCoin(source, coin2, coin1.EndX, false);
 
-            }
-
-            return 0;
+            return new List<Coin>() {
+                coin1,
+                coin2
+            };
         }
 
-        public int FindWidth(byte[] source, int startIndex, int height)
+        public void FindCoin(byte[] source, Coin coin, int startIndex, bool findFirst)
         {
-            /*
-            int currentWidth, current;
-            int maxWidth = 0;
-
-            for (int i = 0; ; i++)
+            for (int i = startIndex; i < source.Length; i += 3)
             {
-                current = startIndex + (i * width * 3);
+                if (source[i] == 255 && source[i + 1] == 255 & source[i + 2] == 255)
+                {
+                    if (findFirst)
+                    {
+                        /* If found the white pixel, its the coin's upper top point */
+
+                        // Assign upper top point to StartY
+                        coin.StartY = i;
+
+                        // Find height of the coin
+                        coin.Height = FindHeight(source, coin, i);
+
+                        // Find the width using Y coordinates
+                        coin.Width = FindWidth(source, coin);
+
+                        // Break the loop
+                        return;
+                    }
+                    else
+                    {
+                        /* If found the white pixel, its the second coin's middle left */
+
+                        // Assign middle left to StartX
+                        coin.StartX = i;
+
+                        // Find width if the coin
+                        coin.Width = FindWidth(source, coin, i);
+
+                        // Find height using X coordinates
+                        coin.Height = FindHeight(source, coin);
+
+                        // Break the loop
+                        return;
+                    }
+                }
             }
-            */
-            return 0;
+        }
+
+        public int FindHeight(byte[] source, Coin coin, int startIndex)
+        {
+            int i = 15, height = 0;
+            int currentByte;
+
+            do
+            {
+                i++;
+
+                // Iterating to vertically next byte
+                currentByte = startIndex + (i * coin.imageWidth * 3);
+
+                // If found a black pixel, means its end of the coin
+                if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
+                {
+                    coin.EndY = currentByte;
+                    return height;
+                }
+
+                // Else, increase the height
+                height++;
+
+            } while (true);
+
+        }
+
+        public int FindHeight(byte[] source, Coin coin)
+        {
+            int currentByte, height = 1, i = 15;
+            int middle = coin.EndX - ((coin.Width / 2) * 3);
+
+            do
+            {
+                i++;
+
+                currentByte = middle + (i * coin.imageWidth * 3);
+
+                if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
+                {
+                    coin.EndY = currentByte;
+                    coin.StartY = coin.EndY - height * 3;
+                    return height;
+                }
+
+                height++;
+            } while (true);
+
+        }
+
+        public int FindWidth(byte[] source, Coin coin)
+        {
+            int currentByte, width = 0, i = 0;
+            int middle = coin.EndY - ((coin.Height / 2) * coin.imageWidth * 3);
+
+            do
+            {
+                currentByte = middle + (i * 3);
+
+                if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
+                {
+                    coin.EndX = currentByte;
+                    coin.StartX = coin.EndX - width * 3;
+                    return width;
+                }
+
+                width += 2;
+                i++;
+            } while (true);
+
+        }
+
+        public int FindWidth(byte[] source, Coin coin, int startIndex)
+        {
+            int i = 1, width = 0;
+            int currentByte;
+
+            do
+            {
+                // Iterating to horizontally next byte
+                currentByte = startIndex + (i * 3);
+
+                // If found a black pixel, means its end of the coin
+                if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
+                {
+                    coin.EndX = currentByte;
+                    return width;
+                }
+
+                // Else, increase the width
+                width++;
+
+                i++;
+            } while (true);
+
         }
 
         public bool BlackSequenceHorizontal(byte[] source, int startIndex, int length)
@@ -61,7 +180,7 @@ namespace CoinDotDetectionImproved
             }
 
             // If black byte number is >= to lenght, means there is black sequence
-            return counter >= length / 1.5 ;
+            return counter >= length / 1.5;
         }
 
         public bool BlackSequenceVertical(byte[] source, int startIndex, int length, int width)
@@ -101,7 +220,7 @@ namespace CoinDotDetectionImproved
             BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, bitmap.PixelFormat);
 
             // Calculating byte array size using stride and height
-            // Stride: number of bytes which are stored in a single row of the bitma (width+padding)
+            // Stride: number of bytes which are stored in a single row of the bitmap (width+padding)
             int byteCount = bitmapData.Stride * bitmap.Height;
 
             // Creating byte array
@@ -148,14 +267,16 @@ namespace CoinDotDetectionImproved
 
         public Color FindBackground(byte[] source, int length)
         {
+            // Not implemented correctly, going to fix later
             int totalR = 0;
             int totalG = 0;
             int totalB = 0;
 
-            for (int i = 0; i < length - 2; i += 3)
-                (totalR, totalG, totalB) = (source[i], source[i + 1], source[i + 2]);
+            (totalR, totalG, totalB) = (source[0], source[1], source[2]);
 
             return Color.FromArgb(totalR / 2, totalG / 2, totalB / 2);
         }
+
+        public static int[] GetCoordinate(int x, int width) => new int[] { (x / 3) % width, (x / 3) / width };
     }
 }
