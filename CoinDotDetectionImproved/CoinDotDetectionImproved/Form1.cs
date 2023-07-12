@@ -11,32 +11,41 @@ namespace CoinDotDetectionImproved
 
         private void Main()
         {
+            // Ms timings wrote for 750x1000 image
 
             // Load image as bitmap
             // 6ms
             Bitmap image = new("CoinsLarge.jpeg");
+            Bitmap originalImage = new("CoinsLarge.jpeg");
 
+            // Assigning image width to local variable
             int Width = image.Width;
 
             // Convert image's bitmap to byte array
             // 2ms
             byte[] source = Methods.BitmapToBytes(image);
 
-            Color backgroundColor = Methods.FindBackground(source, source.Length / 10);
+            // Assigning first 3 bytes as background color (Can change later)
+            // 1ms
+            List<byte> backgroundColor = new() {
+                (byte)(source[0]/2),
+                (byte)(source[1]/2),
+                (byte)(source[2]/2)
+            };
 
             // Convert image to black and white
             // 10 ms
             for (int i = 0; i < source.Length - 2; i += 3)
             {
 
-                // Making background black
                 // If byte value is bigger than background RGB: set next RGB to min
-                if (source[i] >= backgroundColor.R && source[i + 1] >= backgroundColor.G && source[i + 2] >= backgroundColor.B)
+                // Making background black
+                if (source[i] >= backgroundColor[0] && source[i + 1] >= backgroundColor[1] && source[i + 2] >= backgroundColor[2])
                     for (int j = 0; j < 3; j++)
                         source[i + j] = 0;
 
-                // Making coins white
                 // Else, set next RGB to max
+                // Making everything else white (coins)
                 else
                     for (int j = 0; j < 3; j++)
                         source[i + j] = 255;
@@ -59,32 +68,37 @@ namespace CoinDotDetectionImproved
 
             List<Coin> coins = Methods.DetectCoins(source, Width);
 
-            /* DEBUG SECTION */
+            // Drawing rectangles for both coins
+            coins[0].DrawRectangle(image);
+            coins[1].DrawRectangle(image);
 
-            Pen pen = new(Color.Red, 25);
+            // Drawing width and height lines for both coins
+            coins[0].DrawWidthAndHeightLines(image);
+            coins[1].DrawWidthAndHeightLines(image);
 
-            // Draw rectangles
-            using (var graphics = Graphics.FromImage(image))
-            {
-                graphics.DrawRectangle(pen, coins[0].GetRectangle());
-                graphics.DrawRectangle(pen, coins[1].GetRectangle());
-            }
+            Bitmap
+            coin1 = coins[0].CropCoinFromImage(originalImage),
+            coin2 = coins[1].CropCoinFromImage(originalImage);
 
-            // Draw width and height lines for both coins
-            coins[0].DrawWidthLine(image);
-            coins[0].DrawHeightLine(image);
+            Bitmap coinWithdot = FindDot.FindCoinWithDot(coin1, coin2);
 
-            coins[1].DrawWidthLine(image);
-            coins[1].DrawHeightLine(image);
+            // Place the image with drawings
+            Picture2.Image = image;
+            Coin1Picture.Image = coin1;
+            Coin2Picture.Image = coin2;
+            CoinWithDotPicture.Image = coinWithdot;
 
-            // Place the debug image
-            picture2.Image = image;
-            /* DEBUG SECTION END */
 
             // 2ms
             Bitmap newImage = Methods.ByteToBitmap(source, image.PixelFormat, image.Width, image.Height);
 
-            picture.Image = newImage;
+            Picture1.Image = newImage;
+        }
+
+        private void newSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form2 form = new Form2(this);
+            form.Show();
         }
     }
 }

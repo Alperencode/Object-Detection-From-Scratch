@@ -5,8 +5,8 @@ namespace CoinDotDetectionImproved
 {
     internal class Methods
     {
-        public Form1? form { get; set; }
-        public Methods(Form1 form) { this.form = form; }
+        public Form1? Form { get; set; }
+        public Methods(Form1 form) { Form = form; }
         public Methods() { }
 
         public static List<Coin> DetectCoins(byte[] source, int imageWidth)
@@ -79,7 +79,7 @@ namespace CoinDotDetectionImproved
                 // If found a black pixel, means its end of the coin
                 if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
                 {
-                    if(tolerance > 50)
+                    if (tolerance > 50)
                     {
                         coin.EndY = currentByte;
                         return height;
@@ -103,7 +103,7 @@ namespace CoinDotDetectionImproved
             {
                 i++;
 
-                // Iterating to vertically next byte
+                // Iterating to vertically next byte, starting from middle of the width of the coin
                 currentByte = middle + (i * coin.ImageWidth * 3);
 
                 if (source[currentByte] == 0 && source[currentByte + 1] == 0 && source[currentByte + 2] == 0)
@@ -170,11 +170,10 @@ namespace CoinDotDetectionImproved
 
         public static bool BlackSequenceHorizontal(byte[] source, int startIndex, int length)
         {
-            int counter = 0;
-            int currentByte;
+            int currentByte, counter = 0;
 
             // Iterate length times but start from 1 to don't count the init pixel
-            for (int i = 1; i <= length + 1; i++)
+            for (int i = 1; i < length + 1; i++)
             {
                 // Iterate through horizontally next byte
                 currentByte = startIndex + (i * 3);
@@ -235,7 +234,7 @@ namespace CoinDotDetectionImproved
             byte[] bytes = new byte[byteCount];
 
             // Copying bitmap data to byte array using its address
-            // Scan0: Address of bitmapData
+            // Scan0: Beginning address of bitmapData
             Marshal.Copy(bitmapData.Scan0, bytes, 0, byteCount);
 
             // Unlocking bits
@@ -273,18 +272,27 @@ namespace CoinDotDetectionImproved
             return bmp;
         }
 
-        public static Color FindBackground(byte[] source, int length)
+        public static List<byte> FindBackground(byte[] source, int length)
         {
-            // Not implemented correctly, going to fix later
-            int totalR = 0;
-            int totalG = 0;
-            int totalB = 0;
+            // Implemented correctly, but not works properly / as expected
+            int totalR = 0, totalG = 0, totalB = 0;
 
-            (totalR, totalG, totalB) = (source[0], source[1], source[2]);
+            for (int i = 0; i < length; i += 3)
+            {
+                totalR += source[i];
+                totalG += source[i + 1];
+                totalB += source[i + 2];
+            }
 
-            return Color.FromArgb(totalR / 2, totalG / 2, totalB / 2);
+            return new List<byte> {
+                (byte)(source[0]/2),
+                (byte)(source[1]/2),
+                (byte)(source[2]/2)
+            };
+
         }
 
-        public static int[] GetCoordinate(int x, int width) => new int[] { (x / 3) % width, (x / 3) / width };
+        public static int[] GetCoordinate(int x, int width)
+            => new int[] { (x / 3) % width, (x / 3) / width };
     }
 }

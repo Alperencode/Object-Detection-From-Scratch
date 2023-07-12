@@ -1,10 +1,13 @@
 ﻿using System.Drawing;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CoinDotDetectionImproved
 {
     internal class Coin
     {
-        public Coin() { }
+        private readonly Pen pen = new(Color.Green, 25);
+
+        public Coin(Color color, int width) { this.pen = new(color, 8); ImageWidth = width; }
         public Coin(int width) { ImageWidth = width; }
 
         public int ImageWidth { get; set; }
@@ -14,8 +17,6 @@ namespace CoinDotDetectionImproved
         public int EndY { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-
-        private readonly Pen pen = new(Color.Green, 15);
 
 
         // This section can be simplify
@@ -51,6 +52,15 @@ namespace CoinDotDetectionImproved
         /// <summary>
         /// Summary
         /// </summary>
+        public void DrawWidthAndHeightLines(Bitmap image)
+        {
+            DrawWidthLine(image);
+            DrawHeightLine(image);
+        }
+
+        /// <summary>
+        /// Summary
+        /// </summary>
         public Rectangle GetRectangle() =>
             new(
                 GetCoordinateXStart()[0],
@@ -58,5 +68,14 @@ namespace CoinDotDetectionImproved
                 Width,
                 Height
             );
+
+        public Bitmap CropCoinFromImage(Bitmap image)
+            => image.Clone(GetRectangle(), image.PixelFormat);
+    
+        public void DrawRectangle(Bitmap image)
+        {
+            var graphics = Graphics.FromImage(image);
+            graphics.DrawRectangle(pen, GetRectangle());
+        }
     }
 }
