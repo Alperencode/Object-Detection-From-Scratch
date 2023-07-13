@@ -20,13 +20,32 @@
             int coin1Dots = 0, coin2Dots = 0;
 
             // Traversing image
-            for (int i = 0; i < Math.Min(coin1.Length, coin2.Length) - 2; i += 3)
+            int i = 0;
+            for (; i < Math.Min(coin1.Length, coin2.Length) - 2; i += 3)
             {
                 if (coin1[i] < 15 && coin1[i + 1] < 15 && coin1[i + 2] < 15)
                     coin1Dots++;
 
                 if (coin2[i] < 15 && coin2[i + 1] < 15 && coin2[i + 2] < 15)
                     coin2Dots++;
+            }
+
+            // Finish traversing bigger image
+            if (coin1.Length > coin2.Length)
+            {
+                for (; i < coin1.Length - 2; i+=3)
+                {
+                    if (coin1[i] < 15 && coin1[i + 1] < 15 && coin1[i + 2] < 15)
+                        coin1Dots++;
+                }
+            }
+            else
+            {
+                for (; i < coin2.Length - 2; i+=3)
+                {
+                    if (coin2[i] < 15 && coin2[i + 1] < 15 && coin2[i + 2] < 15)
+                        coin2Dots++;
+                }
             }
 
             // Returning coin with dot using counters

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.Picture1 = new System.Windows.Forms.PictureBox();
             this.Picture2 = new System.Windows.Forms.PictureBox();
             this.Coin1Picture = new System.Windows.Forms.PictureBox();
@@ -39,20 +38,16 @@
             this.Coin1ImageLabel = new System.Windows.Forms.Label();
             this.Coin2ImageLabel = new System.Windows.Forms.Label();
             this.CoinWithDotLabel = new System.Windows.Forms.Label();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
+            this.selectImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.xxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DetectLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Picture1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Picture2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Coin1Picture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Coin2Picture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CoinWithDotPicture)).BeginInit();
             this.menuStrip2.SuspendLayout();
-            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // Picture1
@@ -150,66 +145,49 @@
             this.CoinWithDotLabel.TabIndex = 9;
             this.CoinWithDotLabel.Text = "Coin With Dot";
             // 
-            // menuStrip1
-            // 
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Location = new System.Drawing.Point(0, 28);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1295, 24);
-            this.menuStrip1.TabIndex = 10;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
             // menuStrip2
             // 
             this.menuStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectImageToolStripMenuItem,
             this.settingsToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(0, 0);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(1295, 28);
+            this.menuStrip2.Size = new System.Drawing.Size(1273, 28);
             this.menuStrip2.TabIndex = 11;
             this.menuStrip2.Text = "menuStrip2";
             // 
+            // selectImageToolStripMenuItem
+            // 
+            this.selectImageToolStripMenuItem.Name = "selectImageToolStripMenuItem";
+            this.selectImageToolStripMenuItem.Size = new System.Drawing.Size(109, 24);
+            this.selectImageToolStripMenuItem.Text = "Select Image";
+            this.selectImageToolStripMenuItem.Click += new System.EventHandler(this.selectImageToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
-            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newSettingsToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(76, 24);
             this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
-            // contextMenuStrip1
+            // DetectLabel
             // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // contextMenuStrip2
-            // 
-            this.contextMenuStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.xxToolStripMenuItem});
-            this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(93, 28);
-            // 
-            // xxToolStripMenuItem
-            // 
-            this.xxToolStripMenuItem.Name = "xxToolStripMenuItem";
-            this.xxToolStripMenuItem.Size = new System.Drawing.Size(92, 24);
-            this.xxToolStripMenuItem.Text = "xx";
-            // 
-            // newSettingsToolStripMenuItem
-            // 
-            this.newSettingsToolStripMenuItem.Name = "newSettingsToolStripMenuItem";
-            this.newSettingsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.newSettingsToolStripMenuItem.Text = "New Settings";
-            this.newSettingsToolStripMenuItem.Click += new System.EventHandler(this.newSettingsToolStripMenuItem_Click);
+            this.DetectLabel.AutoSize = true;
+            this.DetectLabel.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.DetectLabel.ForeColor = System.Drawing.Color.Green;
+            this.DetectLabel.Location = new System.Drawing.Point(473, 809);
+            this.DetectLabel.Name = "DetectLabel";
+            this.DetectLabel.Size = new System.Drawing.Size(308, 54);
+            this.DetectLabel.TabIndex = 12;
+            this.DetectLabel.Text = "Coins Detected";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1295, 787);
+            this.ClientSize = new System.Drawing.Size(1273, 872);
+            this.Controls.Add(this.DetectLabel);
             this.Controls.Add(this.CoinWithDotLabel);
             this.Controls.Add(this.Coin2ImageLabel);
             this.Controls.Add(this.Coin1ImageLabel);
@@ -220,9 +198,8 @@
             this.Controls.Add(this.Coin1Picture);
             this.Controls.Add(this.Picture2);
             this.Controls.Add(this.Picture1);
-            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.menuStrip2);
-            this.MainMenuStrip = this.menuStrip1;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Coin Dot Detection Improved";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -233,7 +210,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.CoinWithDotPicture)).EndInit();
             this.menuStrip2.ResumeLayout(false);
             this.menuStrip2.PerformLayout();
-            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -251,12 +227,9 @@
         private Label Coin1ImageLabel;
         private Label Coin2ImageLabel;
         private Label CoinWithDotLabel;
-        private MenuStrip menuStrip1;
         private MenuStrip menuStrip2;
         private ToolStripMenuItem settingsToolStripMenuItem;
-        private ContextMenuStrip contextMenuStrip1;
-        private ContextMenuStrip contextMenuStrip2;
-        private ToolStripMenuItem xxToolStripMenuItem;
-        private ToolStripMenuItem newSettingsToolStripMenuItem;
+        private ToolStripMenuItem selectImageToolStripMenuItem;
+        private Label DetectLabel;
     }
 }

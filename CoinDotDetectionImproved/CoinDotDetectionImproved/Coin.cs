@@ -7,7 +7,12 @@ namespace CoinDotDetectionImproved
     {
         private readonly Pen pen = new(Color.Green, 25);
 
-        public Coin(Color color, int width) { this.pen = new(color, 8); ImageWidth = width; }
+        public Coin(Color color, int width)
+        { 
+            this.pen = new(color, 8);
+            ImageWidth = width;
+        }
+
         public Coin(int width) { ImageWidth = width; }
 
         public int ImageWidth { get; set; }
@@ -19,15 +24,12 @@ namespace CoinDotDetectionImproved
         public int Height { get; set; }
 
 
-        // This section can be simplify
+        // Get x and y axis coordinates for properties
         public int[] GetCoordinateXStart() => Methods.GetCoordinate(StartX, ImageWidth);
         public int[] GetCoordinateXEnd() => Methods.GetCoordinate(EndX, ImageWidth);
         public int[] GetCoordinateYStart() => Methods.GetCoordinate(StartY, ImageWidth);
         public int[] GetCoordinateYEnd() => Methods.GetCoordinate(EndY, ImageWidth);
 
-        /// <summary>
-        /// Summary
-        /// </summary>
         public void DrawWidthLine(Bitmap image)
         {
             using var graphics = Graphics.FromImage(image);
@@ -37,30 +39,6 @@ namespace CoinDotDetectionImproved
             );
         }
 
-        /// <summary>
-        /// Summary
-        /// </summary>
-        public void DrawHeightLine(Bitmap image)
-        {
-            using var graphics = Graphics.FromImage(image);
-            graphics.DrawLine(pen,
-                GetCoordinateYStart()[0], GetCoordinateYStart()[1], 
-                GetCoordinateYEnd()[0], GetCoordinateYEnd()[1]
-            );
-        }
-
-        /// <summary>
-        /// Summary
-        /// </summary>
-        public void DrawWidthAndHeightLines(Bitmap image)
-        {
-            DrawWidthLine(image);
-            DrawHeightLine(image);
-        }
-
-        /// <summary>
-        /// Summary
-        /// </summary>
         public Rectangle GetRectangle() =>
             new(
                 GetCoordinateXStart()[0],
@@ -70,8 +48,32 @@ namespace CoinDotDetectionImproved
             );
 
         public Bitmap CropCoinFromImage(Bitmap image)
-            => image.Clone(GetRectangle(), image.PixelFormat);
-    
+        {
+            try
+            {
+                return image.Clone(GetRectangle(), image.PixelFormat);
+            }
+            catch(Exception)
+            {
+                return new Bitmap(image);
+            }
+        }
+
+        public void DrawHeightLine(Bitmap image)
+        {
+            using var graphics = Graphics.FromImage(image);
+            graphics.DrawLine(pen,
+                GetCoordinateYStart()[0], GetCoordinateYStart()[1],
+                GetCoordinateYEnd()[0], GetCoordinateYEnd()[1]
+            );
+        }
+
+        public void DrawWidthAndHeightLines(Bitmap image)
+        {
+            DrawWidthLine(image);
+            DrawHeightLine(image);
+        }
+
         public void DrawRectangle(Bitmap image)
         {
             var graphics = Graphics.FromImage(image);
