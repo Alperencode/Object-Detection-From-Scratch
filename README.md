@@ -4,6 +4,11 @@
 
 ## Images
 
+
+<h2> Face Similarity Project (With Emgu Library)</h2>
+
+***Description will be added***
+
 <h3 align=center>
 
 <img src="images/FaceSimilarity/0-FaceDetectionSimilarity.png">
@@ -11,6 +16,12 @@
 Face Detection Similarity Check
 
 <br>
+
+<h2> Coin Detection (Using GetPixel)(Without Library)</h2>
+
+***Description will be added***
+
+<h3 align=center>
 
 <img src="images/CoinDotDetection/1-DetectingCoins.png">
 
@@ -77,5 +88,70 @@ Detecting Coin With Dot
 Drawing Ellipse to Coin With Dot
 
 <br>
+
+<img src="images/CoinDotDetection/11-AddingSettingsSection.png">
+
+Adding Settings Section
+
+<br>
+
+<img src="images/CoinDotDetection/12-AdvancedSettingsSection.png">
+
+Improving Settings section and UI
+
+<br>
+
+<h2> Coin Detection Improved (Using byte arrays) (Without Library)</h2>
+
+***Description will be added***
+
+<h3 align=center>
+
+
+<img src="images/CoinDotDetectionImproved/1-CoinsBlackAndWhite.png">
+
+Converting Image bytes to black and white 
+
+<br>
+
+<img src="images/CoinDotDetectionImproved/2.1-CoinsClearedB&W.png">
+
+Cleaning up black pixels in coin
+
+<br>
+
+<img src="images/CoinDotDetectionImproved/2.2-CoinsClearedB&W.png">
+
+Improving clearing 
+
+<br>
+
+<img src="images/CoinDotDetectionImproved/3.1-DrawingLinesNotFixed-1.png">
+
+First detection try using byte arrays
+
+<br>
+
+<img src="images/CoinDotDetectionImproved/3.2-DrawingLinesNotFixed-2.png">
+
+Improving detection algorithm
+
+<br>
+
+<img src="images/CoinDotDetectionImproved/3.2-DrawingLinesNotFixed-2.png">
+
+Improving detection algorithm
+
+<br>
+
+<img src="images/CoinDotDetectionImproved/4-Finished.png">
+
+Finishing detection and coin with dot algorithm
+
+<br>
+
+<img src="images/CoinDotDetectionImproved/5.2-FinishedWithSettings2.png">
+
+Adding settings section to make project dynamic
 
 </h3>
