@@ -1,3 +1,5 @@
+using System.Runtime.Versioning;
+
 namespace CoinDotDetectionImproved
 {
     public partial class Form1 : Form
@@ -20,6 +22,7 @@ namespace CoinDotDetectionImproved
 
         private void Form1_Load(object sender, EventArgs e) => Main(FilePath);
 
+        [SupportedOSPlatform("windows")]
         public void Main(string filePath)
         {
             // Ms timings wrote for 750x1000 image
@@ -72,7 +75,7 @@ namespace CoinDotDetectionImproved
                         (source[i], source[i + 1], source[i + 2]) = (255, 255, 255);
 
                 // If any of bytes are max but there is black sequence, set byte to min
-                if (source[i] == 255 || source[i + 1] == 255 || source[i + 2] == 255)
+                if (source[i] == 255 && source[i + 1] == 255 && source[i + 2] == 255)
                     if (Methods.BlackSequenceHorizontal(source, i, BlackSequenceLength))
                         (source[i], source[i + 1], source[i + 2]) = (0, 0, 0);
             }
@@ -115,7 +118,7 @@ namespace CoinDotDetectionImproved
         private void selectImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog file = new();
-            
+
             if (file.ShowDialog() == DialogResult.OK)
             {
                 FilePath = file.FileName;

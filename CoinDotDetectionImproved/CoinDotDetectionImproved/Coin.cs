@@ -49,10 +49,12 @@ namespace CoinDotDetectionImproved
 
         public Bitmap CropCoinFromImage(Bitmap image)
         {
+            // If there is no coin found, cloning process will be failed
             try
             {
                 return image.Clone(GetRectangle(), image.PixelFormat);
             }
+            // Return same bitmap if process fails
             catch(Exception)
             {
                 return new Bitmap(image);
