@@ -5,7 +5,7 @@
 ## Images
 
 
-<h2> Face Similarity Project (With Emgu Library)</h2>
+<h2> Face Similarity (With Emgu Library)</h2>
 
 ***Description will be added***
 
@@ -17,7 +17,7 @@ Face Detection Similarity Check
 
 <br>
 
-<h2> Coin Detection (Using GetPixel)(Without Library)</h2>
+<h2> Coin Detection Project (Using GetPixel) (Without Library)</h2>
 
 ***Description will be added***
 
@@ -49,25 +49,25 @@ Finding Both Coins X Axis
 
 <img src="images/CoinDotDetection/5-DrawingRedLinesForCoinsWidth.png">
 
-Drawing Red Lines for Coins Width
+Drawing Red Lines for Width
 
 <br>
 
 <img src="images/CoinDotDetection/6-DrawingRedLinesForBothCoins.png">
 
-Drawing Red Lines For Both Coins
+Drawing Red Lines For Height
 
 <br>
 
 <img src="images/CoinDotDetection/7.1-DrawingRectangleForBothCoins.png">
 
-Drawing Rectangle For Both Coins 1
+Drawing Rectangle For Both Coins - 1
 
 <br>
 
 <img src="images/CoinDotDetection/7.2-DrawingRectangleForBothCoins.png">
 
-Drawing Rectangle For Both Coins 2
+Drawing Rectangle For Both Coins - 2
 
 <br>
 
@@ -101,7 +101,7 @@ Improving Settings section and UI
 
 <br>
 
-<h2> Coin Detection Improved (Using byte arrays) (Without Library)</h2>
+<h2> Coin Detection Project Improved (Using byte arrays) (Without Library)</h2>
 
 ***Description will be added***
 
@@ -129,12 +129,6 @@ Improving clearing
 <img src="images/CoinDotDetectionImproved/3.1-DrawingLinesNotFixed-1.png">
 
 First detection try using byte arrays
-
-<br>
-
-<img src="images/CoinDotDetectionImproved/3.2-DrawingLinesNotFixed-2.png">
-
-Improving detection algorithm
 
 <br>
 
