@@ -134,6 +134,12 @@ First detection try using byte arrays
 
 <img src="images/CoinDotDetectionImproved/3.2-DrawingLinesNotFixed-2.png">
 
+Drawing rectangles
+
+<br>
+
+<img src="images/CoinDotDetectionImproved/3.3-DrawingLinesNearlyFixed.png">
+
 Improving detection algorithm
 
 <br>
