@@ -121,7 +121,13 @@ My first project's method was easy to implement because I was using GetPixel() f
 
 So I developed a new algorithm that is based on byte arrays. In byte array, whole image is one array and that array contains image bytes. Each 3 sequence of bytes represents 1 pixel's RGB.
 
-I developed an algorithm that slightly different from the first one because in byte array, I have one dimensional array. In the beginning I converted image to Black and White to seperate background and coins (Image 1). Then I cleared up the black pixels in coin. I did that using simple logic that searchs for black sequence of pixels horizontally if there is no sequence, it converts that black pixel to white. That was the most time consuming part for the program but ... 
+I developed an algorithm that slightly different from the first one because in byte array, I have one dimensional array. In the beginning I converted image to Black and White to seperate background and coins (Image 1). Then I cleared up the black pixels in coin (Image 2). I did that using simple logic that searchs for black sequence of pixels horizontally if there is no sequence, it converts that black pixel to white. 
+
+That was the most time consuming part for the program but it was necessary for finding width and height in next iterations because if we don't clean the black pixels in coin, we need to search for black sequence to determine if the coin ended or not. But if we clean the pixels then whenever we encounter black pixel, we can say that its the end of the coin (Image 3).
+
+Then I started to develop an algorithm to find width and height (Image 4). It was not working well in the beginning because it has some bugs and logical mistakes (Image 5). But I kept improving the algorithm and finally implemented a solid algorithm that can detect coins and finds width, height and (x,y) coordinates for each coin (Image 6).
+
+After detecting the coins its easy to determine which one has dot in it. I've cropped the coins from image using width and height coordinates. Then I scanned both ...
 
 <h3 align=center>
 
