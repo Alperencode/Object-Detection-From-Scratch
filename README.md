@@ -126,7 +126,7 @@ That was the most time consuming part for the program but it was necessary for f
 
 Then I started to develop an algorithm to find width and height (Image 4). It was not working well in the beginning because it has some bugs and logical mistakes (Image 5). But I kept improving the algorithm and finally implemented a solid algorithm that can detect coins and finds width, height and (x,y) coordinates for each coin (Image 6).
 
-After detecting the coins its easy to determine which one has dot in it. I've cropped the coins from image using width and height coordinates. Then I scanned both image by traversing byte arrays. After counting the black pixels I was capable to determine the which coin has dot in it (Image 7).
+After detecting the coins its easy to determine which one has dot in it. I've cropped the coins from image using width and height coordinates. Then I scanned both image by traversing byte arrays. After counting the black pixels I was capable to determine the which coin has dot on it (Image 7).
 
 Finally I've added a settings section (Image 8) to the program to not use static variables in project. Then I've added mouse-hover descriptions (Image 9) for each parameter to explain what are they used for. So any non-fimilar user can use this program which makes this program more user friendly.
 
@@ -186,3 +186,13 @@ Finally I've added a settings section (Image 8) to the program to not use static
 9) Adding descriptions for each parameter for information
 
 </h3>
+
+<br>
+
+<h2> Related </h2>
+
+- [OpenCV](https://github.com/Alperencode/OpenCV): My OpenCV repository that has Face-Detection programs
+
+- [Midi-Project](https://github.com/Alperencode/Midi-Project): My previous summer intern project, which is about real-time editing of midi signals
+
+<br>
