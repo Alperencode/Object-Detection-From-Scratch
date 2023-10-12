@@ -9,11 +9,11 @@ I've worked on 3 projects in ascending order of difficulty during my internship.
 Face Similarity program using EmguCV. EmguCV is a library that allows us to use OpenCV in C#. So I used OpenCV's face detection functions to implement simple similarity algorithm that I wrote. The algorithm extracts both faces and compares each image pixel's color similarity and calculates a similarity score. In addition program works in real-time and uses video capture device as input device.
 
 <h3 align=center>
-
 <img src="images/FaceSimilarity/0-FaceDetectionSimilarity.png">
 
 Face Detection Similarity Check
 
+</h3>
 <br>
 
 <h2> Coin Dot Detection Project (Using GetPixel) (Without Library)</h2>
@@ -35,83 +35,107 @@ So I implemented a simple dot detection algorithm that counts black pixels in im
 Afterwards I draw ellipse on coin with dot (Image 11) and I added a settings section to not use any static variables in the program (Image 12-13). 
 
 <h3 align=center>
-
 <img src="images/CoinDotDetection/1-DetectingCoins.png">
 
 1) Detecting Coins
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/2-FindingFirstCoinXStart.png">
 
 2) Finding First Coin X Start
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/3-FindingFirstCoinXEnd.png">
 
 3) Finding First Coin X End
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/4-FindingBothCoinsXAxis.png">
 
 4) Finding Both Coins X Axis
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/5-DrawingRedLinesForCoinsWidth.png">
 
 5) Drawing Red Lines for Width
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/6-DrawingRedLinesForBothCoins.png">
 
 6) Drawing Red Lines For Height
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/7.1-DrawingRectangleForBothCoins.png">
 
 7) Drawing Rectangle For Both Coins - 1
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/7.2-DrawingRectangleForBothCoins.png">
 
 8) Drawing Rectangle For Both Coins - 2
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/8-CroppingBothCoins.png">
 
 9) Cropping Both Coins
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/9-DetectingCoinWithDot.png">
 
 10) Detecting Coin With Dot
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/10-DrawingEllipse.png">
 
 11) Drawing Ellipse to Coin With Dot
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/11-AddingSettingsSection.png">
 
 12) Adding Settings Section
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetection/12-AdvancedSettingsSection.png">
 
 13) Improving Settings section and UI
 
+</h3>
 <br>
 
 <h2> Coin Detection Project Improved (Using byte arrays) (Without Library)</h2>
@@ -131,56 +155,70 @@ After detecting the coins its easy to determine which one has dot in it. I've cr
 Finally I've added a settings section (Image 8) to the program to not use static variables in project. Then I've added mouse-hover descriptions (Image 9) for each parameter to explain what are they used for. So any non-fimilar user can use this program which makes this program more user friendly.
 
 <h3 align=center>
-
-
 <img src="images/CoinDotDetectionImproved/1-CoinsBlackAndWhite.png">
 
-1) Converting Image bytes to black and white 
+1) Converting Image bytes to black and white
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetectionImproved/2.1-CoinsClearedB&W.png">
 
 2) Cleaning up black pixels in coin
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetectionImproved/2.2-CoinsClearedB&W.png">
 
 3) Improving clearing 
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetectionImproved/3.1-DrawingLinesNotFixed-1.png">
 
 4) First detection try using byte arrays
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetectionImproved/3.2-DrawingLinesNotFixed-2.png">
 
 5) Drawing rectangles
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetectionImproved/3.3-DrawingLinesNearlyFixed.png">
 
 6) Improving detection algorithm
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetectionImproved/4-Finished.png">
 
 7) Finishing detection and coin with dot algorithm
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetectionImproved/5.2-FinishedWithSettings2.png">
 
 8) Adding settings section to make project dynamic
 
+</h3>
 <br>
 
+<h3 align=center>
 <img src="images/CoinDotDetectionImproved/6-SettingsHoverInformation.png">
 
 9) Adding descriptions for each parameter for information
