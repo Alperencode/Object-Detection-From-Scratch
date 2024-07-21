@@ -1,6 +1,6 @@
-# VisioTT
+# Object Detection From Scratch
 
-I've worked on 3 projects in ascending order of difficulty during my internship. These projects were about Image-Processing in C#. Feel free to check out them below
+I've worked on 3 projects in ascending order of difficulty during my internship. These projects were about Image-Processing in C#. Check out them out below
 
 ## Projects
 
